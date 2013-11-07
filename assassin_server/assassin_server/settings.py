@@ -29,6 +29,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ADMINS = ('Michael Linder', 'mplinder@utexas.edu')
 
 # Application definition
 
@@ -83,6 +84,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_HOST = 'smtp.webfaction.com'
+EMAIL_HOST_USER = 'mailbox_username'
+EMAIL_HOST_PASSWORD = 'mailbox_password'
+DEFAULT_FROM_EMAIL = 'valid_email_address'
+SERVER_EMAIL = 'valid_email_address'
 
 try:
     from settings_local import *
