@@ -21,5 +21,6 @@ class Attempt(models.Model):
     def save(self):
         # Call save here so that the file has a path that cv2 can read from
         super(Attempt, self).save()
-        self.confidence_level = get_confidence_level(self.to_user, self.image)
-        super(Attempt, self).save()
+        if not self.confidence_level:
+            self.confidence_level = get_confidence_level(self.to_user, self.image)
+            super(Attempt, self).save()
