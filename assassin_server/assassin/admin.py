@@ -1,3 +1,5 @@
 from django.contrib import admin
+from assassin.models import TrainingImage, Attempt
 
-# Register your models here.
+admin.site.register(TrainingImage)
+admin.site.register(Attempt)
