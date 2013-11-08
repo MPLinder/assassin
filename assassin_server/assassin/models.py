@@ -1,3 +1,5 @@
+from utils import get_confidence_level
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -15,3 +17,9 @@ class Attempt(models.Model):
     comment = models.CharField(max_length=200, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     confidence_level = models.IntegerField(blank=True, null=True)
+
+    def save(self):
+        # Call save here so that the file has a path that cv2 can read from
+        super(Attempt, self).save()
+        self.confidence_level = get_confidence_level(self.to_user, self.image)
+        super(Attempt, self).save()

@@ -9,7 +9,6 @@ from django.shortcuts import render
 
 def poc(request, attempt_id=None):
     context = {}
-    # cv2.imread(img.image.file.name)
     if request.method == 'POST':
         request.POST['from_user'] = str(User.objects.get(username='poc_user').id)
         request.POST['to_user'] = str(User.objects.get(username='mplinder').id)
