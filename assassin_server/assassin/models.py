@@ -14,3 +14,4 @@ class Attempt(models.Model):
     image = models.FileField(upload_to='attempts')
     comment = models.CharField(max_length=200, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
+    confidence_level = models.IntegerField(blank=True, null=True)

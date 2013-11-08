@@ -1,1 +1,10 @@
-{{ hello }}
+{% if attempt_id %}
+    <p>You've made an assassination attempt. We calculate that it is
+        {{ confidence_level }} likely that you hit your target. </p>
+{% else %}
+    <form action="{% url 'poc'%}" enctype="multipart/form-data" method="POST">
+       {% csrf_token %}
+       {{ form.as_p }}
+       <input type="submit" value="Send">
+     </form>
+{% endif %}
