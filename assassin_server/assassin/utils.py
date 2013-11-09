@@ -2,6 +2,8 @@ import cv2
 import numpy
 import sys
 
+from django.conf import settings
+
 
 # cv2.imread(img.image.file.name)
 def read_image(image_file):
@@ -37,7 +39,8 @@ def get_confidence_level(to_user, image):
         labels.append(0)
 
     model = cv2.createLBPHFaceRecognizer()
-    model.train(numpy.asarray(target), numpy.asarray(labels))
+    #model.train(numpy.asarray(target), numpy.asarray(labels))
+    model.load(settings.MODEL_IMAGES_ROOT + to_user.username + '.yml')
 
     [label, confidence] = model.predict(numpy.asarray(attempt))
 
