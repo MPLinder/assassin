@@ -16,7 +16,7 @@
                 {% endif %}
             </div>
             <div>
-                <img src="{{ attempt_url }}" />
+                <img src="{{ attempt_url }}" width="150" height="200" />
             </div>
         {% endif %}
         <div>
@@ -27,7 +27,7 @@
         </div>
         <div>
         {% for url in img_urls %}
-            <img src="{{ url }}" />
+            <img src="{{ url }}" width="150" height="200" />
         {% endfor %}
         </div>
         <form action="{% url 'poc'%}" enctype="multipart/form-data" method="POST">
