@@ -25,11 +25,11 @@ class Attempt(models.Model):
         elif self.confidence_level == 0:
             return '100%', False
         elif self.confidence_level < 35.00:
-            scaled_val = scale(self.confidence_level, range(0, 35), range(0, 20))
-            perc = 100 * (scaled_val/20)
+            scaled_val = scale(self.confidence_level, (0, 35), (0, 20))
+            perc = 100 - scaled_val
             return '%.2f' % perc + '%', True
         else:
-            scaled_val = scale(self.confidence_level, range(35, 100), range(0, 80))
+            scaled_val = scale(self.confidence_level, (35, 100), (0, 80))
             perc = 80 - scaled_val
             return '%.2f' % perc + '%', False
 
