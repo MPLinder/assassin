@@ -1,3 +1,4 @@
+import constants
 from forms import AttemptForm, POCForm
 from models import Attempt, TrainingImage
 
@@ -22,6 +23,7 @@ def poc(request, attempt_id=None):
         imgs = TrainingImage.objects.filter(user=mplinder)
         context['img_urls'] = [img.image.url for img in imgs]
         context['form'] = POCForm()
+        context['success_percent'] = constants.SUCCESS_PERCENT
 
         if attempt_id:
             attempt = Attempt.objects.get(id=int(attempt_id))
