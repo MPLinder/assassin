@@ -8,10 +8,13 @@
         <h1>Assassin Proof of Concept</h1>
         {% if attempt_id %}
             <div>You've made an assassination attempt. We calculate that it is
-                {{ confidence_level }} likely that you hit your target.
+                {{ confidence_level }}% likely that you hit your target.
                 {% if success %}
                     You succeeded!
                 {% else %}
+                    {% if confidence_level == '100' %}
+                        We're so confident that this image is Michael that we think you just uploaded one of the images below.
+                    {% endif %}
                     You failed.
                 {% endif %}
             </div>
