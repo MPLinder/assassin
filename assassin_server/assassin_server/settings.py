@@ -32,7 +32,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['wonderflonium.net', 'www.wonderflonium.net']
 
 ADMINS = ('Michael Linder', 'mplinder@utexas.edu')
 
