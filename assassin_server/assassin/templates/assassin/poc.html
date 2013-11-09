@@ -1,10 +1,39 @@
-{% if attempt_id %}
-    <p>You've made an assassination attempt. We calculate that it is
-        {{ confidence_level }} likely that you hit your target. </p>
-{% else %}
-    <form action="{% url 'poc'%}" enctype="multipart/form-data" method="POST">
-       {% csrf_token %}
-       {{ form.as_p }}
-       <input type="submit" value="Send">
-     </form>
-{% endif %}
+<html>
+    <head>
+        <title>
+            Assassin Proof of Concept
+        </title>
+    </head>
+    <body>
+        <h1>Assassin Proof of Concept</h1>
+        {% if attempt_id %}
+            <div>You've made an assassination attempt. We calculate that it is
+                {{ confidence_level }} likely that you hit your target.
+                {% if success %}
+                    You succeeded!
+                {% else %}
+                    You failed.
+                {% endif %}
+            </div>
+            <div>
+                <img src="{{ attempt_url }}" />
+            </div>
+        {% endif %}
+        <div>
+            Upload an image to see how much we think your image looks like Michael Linder.
+        </div>
+        <div>
+            Your image will be compared against these images:
+        </div>
+        <div>
+        {% for url in img_urls %}
+            <img src="{{ url }}" />
+        {% endfor %}
+        </div>
+        <form action="{% url 'poc'%}" enctype="multipart/form-data" method="POST">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <input type="submit" value="Send">
+         </form>
+    </body>
+</html>

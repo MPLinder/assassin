@@ -1,5 +1,5 @@
 from forms import AttemptForm, POCForm
-from models import Attempt
+from models import Attempt, TrainingImage
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -18,12 +18,18 @@ def poc(request, attempt_id=None):
             return HttpResponseRedirect(reverse('poc_done',
                                                 kwargs={'attempt_id': attempt.id}))
     else:
+        mplinder = User.objects.get(username='mplinder')
+        imgs = TrainingImage.objects.filter(user=mplinder)
+        context['img_urls'] = [img.image.url for img in imgs]
+        context['form'] = POCForm()
+
         if attempt_id:
             attempt = Attempt.objects.get(id=int(attempt_id))
             context['attempt_id'] = attempt_id
-            context['confidence_level'] = attempt.confidence_level
-        else:
-            form = POCForm()
-            context['form'] = form
+            context['attempt_url'] = attempt.image.url
+
+            confidence, success = attempt.get_confidence()
+            context['confidence_level'] = confidence
+            context['success'] = success
 
     return render(request, 'assassin/poc.html', context)
