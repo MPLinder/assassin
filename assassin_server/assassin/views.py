@@ -8,6 +8,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 
+def index(request):
+    return render(request, 'assassin/index.html')
+
+
 def poc(request, attempt_id=None):
     context = {}
     if request.method == 'POST':
