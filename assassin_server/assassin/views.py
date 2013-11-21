@@ -2,6 +2,7 @@ import constants
 from forms import AttemptForm, POCForm
 from models import Attempt, TrainingImage
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
