@@ -39,12 +39,24 @@ def get_confidence_level(to_user, image):
         labels.append(0)
 
     model = cv2.createLBPHFaceRecognizer()
-    #model.train(numpy.asarray(target), numpy.asarray(labels))
     model.load(settings.MODEL_IMAGES_ROOT + to_user.username + '.yml')
 
     [label, confidence] = model.predict(numpy.asarray(attempt))
 
     return confidence
+
+
+def train_user_images(user):
+    target = []
+    labels = []
+    for training_image in user.trainingimage_set.all():
+        target.append(read_image(training_image.image.file))
+        labels.append(0)
+
+    model = cv2.createLBPHFaceRecognizer()
+    model.train(numpy.asarray(target), numpy.asarray(labels))
+    model.save(settings.MODEL_IMAGES_ROOT + user.username + '.yml')
+
 
 def scale(val, src, dst):
     """
