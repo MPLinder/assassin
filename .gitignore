@@ -40,4 +40,5 @@ settings_*.py
 db.sqlite3
 django.log
 
-supervisord.*
+supervisord.log
+supervisord.pid
