@@ -39,3 +39,5 @@ nosetests.xml
 settings_*.py
 db.sqlite3
 django.log
+
+supervisord.*
