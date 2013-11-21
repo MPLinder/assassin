@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'djsupervisor',
+    'djcelery',
 )
 
 MIDDLEWARE_CLASSES = (
