@@ -42,3 +42,13 @@ django.log
 
 supervisord.log
 supervisord.pid
+
+
+# Mobile
+*.apk
+
+assassin_mobile/.classpath
+assassin_mobile/bin/resources.ap_
+assassin_mobile/bin/jarlist.cache
+.metadata/*
+assassin_mobile/bin/*
