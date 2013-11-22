@@ -3,7 +3,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('assassin_server.views',
-    url(r'^assassin/', include('assassin.urls')),
     url(r'^admin/', include(admin.site.urls)),
     (r'^accounts/', include('allauth.urls')),
+    url(r'^/*', include('assassin.urls')),
 )

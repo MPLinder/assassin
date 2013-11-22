@@ -11,7 +11,11 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'assassin/index.html')
+    if request.user.is_authenticated():
+        context = {'full_name': request.user.get_full_name}
+        return render(request, 'assassin/index.html', context)
+    else:
+        return render(request, 'assassin/login.html')
 
 
 def poc(request, attempt_id=None):

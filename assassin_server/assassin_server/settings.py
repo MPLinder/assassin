@@ -36,6 +36,8 @@ ALLOWED_HOSTS = ['wonderflonium.net', 'www.wonderflonium.net']
 
 ADMINS = ('Michael Linder', 'mplinder@utexas.edu')
 
+LOGIN_REDIRECT_URL = '/'
+
 # Application definition
 
 INSTALLED_APPS = (

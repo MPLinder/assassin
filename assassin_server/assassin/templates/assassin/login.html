@@ -1,0 +1,6 @@
+{% extends "assassin/base.html" %}
+
+{% block content %}
+    {% load socialaccount %}
+    <a href="{% provider_login_url "facebook" method="oauth2" %}">Login With Facebook</a>
+{% endblock%}
