@@ -1,4 +1,5 @@
 import constants
+import json
 import tasks
 from forms import AttemptForm, POCForm
 from models import Attempt, TrainingImage
@@ -6,16 +7,23 @@ from models import Attempt, TrainingImage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+
+
+def render_response(request, template=None, context=None):
+    if request.REQUEST.get('type') == 'json':
+        return HttpResponse(json.dumps(context), content_type='application/json')
+    else:
+        return render(request, template, context)
 
 
 def index(request):
     if request.user.is_authenticated():
-        context = {'full_name': request.user.get_full_name}
-        return render(request, 'assassin/index.html', context)
+        context = {'full_name': request.user.get_full_name()}
+        return render_response(request, 'assassin/index.html', context)
     else:
-        return render(request, 'assassin/login.html')
+        return render_response(request, 'assassin/login.html')
 
 
 def poc(request, attempt_id=None):
