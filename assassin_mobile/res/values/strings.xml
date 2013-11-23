@@ -4,5 +4,7 @@
     <string name="app_name">Assassin!</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="welcome">Assassin!</string>
+    <string name="app_id">554910827916749</string>
 
 </resources>
