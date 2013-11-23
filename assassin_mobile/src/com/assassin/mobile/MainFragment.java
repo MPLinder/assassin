@@ -40,6 +40,7 @@ public class MainFragment extends Fragment {
 	    if (state.isOpened()) {
 	        Log.i(TAG, "Logged in...");
 	        Log.i(TAG, session.getAccessToken());
+	        new CallServerTask().execute("", "true", "GET");
 	    } else if (state.isClosed()) {
 	        Log.i(TAG, "Logged out...");
 	    }

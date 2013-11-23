@@ -24,7 +24,6 @@ def render_response(request, template=None, context=None):
 
 
 def index(request):
-    import pdb; pdb. set_trace()
     if request.user.is_authenticated():
         context = {'full_name': request.user.get_full_name()}
         return render_response(request, 'assassin/index.html', context)
