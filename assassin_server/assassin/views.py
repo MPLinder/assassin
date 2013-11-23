@@ -2,6 +2,7 @@ import constants
 import json
 import tasks
 from forms import AttemptForm, POCForm
+from functools import wraps
 from models import Attempt, TrainingImage
 
 from allauth.socialaccount import providers
@@ -16,6 +17,26 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
 
+def get_or_create_fb_user(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        access_token = request.REQUEST.get('access_token', '')
+        try:
+            app = SocialApp.objects.get(provider='facebook')
+            token = SocialToken(app=app, token=access_token)
+            login = fb_complete_login(request, app, token)
+            login.token = token
+            login.state = SocialLogin.state_from_request(request)
+            complete_social_login(request, login)
+            return view_func(request, *args, **kwargs)
+        # TODO: what to except here?
+        except:
+            context = {'message': 'Unable to get or create facebook user.'}
+            return render_response(request, 'assassin/login.html', context)
+
+    return _wrapped_view
+
+
 def render_response(request, template=None, context=None):
     if request.REQUEST.get('type') == 'json':
         return HttpResponse(json.dumps(context), content_type='application/json')
@@ -23,29 +44,12 @@ def render_response(request, template=None, context=None):
         return render(request, template, context)
 
 
+@get_or_create_fb_user
 def index(request):
     if request.user.is_authenticated():
         context = {'full_name': request.user.get_full_name()}
         return render_response(request, 'assassin/index.html', context)
     else:
-        return render_response(request, 'assassin/login.html')
-
-
-def login_with_fb_token(request):
-    access_token = request.REQUEST.get('access_token', '')
-
-    try:
-        app = SocialApp.objects.get(provider='facebook')
-        token = SocialToken(app=app, token=access_token)
-        login = fb_complete_login(request, app, token)
-        login.token = token
-        login.state = SocialLogin.state_from_request(request)
-        complete_social_login(request, login)
-
-        context = {'full_name': request.user.get_full_name()}
-        return render_response(request, 'assassin/index.html', context)
-    # TODO: what to except here?
-    except:
         return render_response(request, 'assassin/login.html')
 
 
