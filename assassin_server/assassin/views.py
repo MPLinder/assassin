@@ -31,7 +31,7 @@ def get_or_create_fb_user(view_func):
             return view_func(request, *args, **kwargs)
         # TODO: what to except here?
         except:
-            context = {'message': 'Unable to get or create facebook user.'}
+            context = {'error': 'Unable to get or create facebook user.'}
             return render_response(request, 'assassin/login.html', context)
 
     return _wrapped_view
