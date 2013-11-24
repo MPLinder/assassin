@@ -1,5 +1,6 @@
 package com.assassin.mobile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,7 +25,7 @@ public class Utils {
 	}
 	
 	
-    public static InputStreamReader callServer(String URI, boolean authed, String reqType) {
+    public static HttpsURLConnection callServer(String URI, boolean authed, String reqType) {
     	HostnameVerifier hostnameVerifier = new HostnameVerifier() {
     	    @Override
     	    public boolean verify(String hostname, SSLSession session) {
@@ -35,18 +36,18 @@ public class Utils {
     	    }
     	};
     	
-        InputStreamReader result = null;
+    	HttpsURLConnection conn = null;
         try {
         	if (authed) {
             	if (!URI.contains("?")) {
             		URI += "?";
             	}
             	Session session = Session.getActiveSession();
-                URI = URI + Constants.ACCESS_TOKEN_KEY + "=" + session.getAccessToken();
+                URI = URI + Constants.ACCESS_TOKEN_KEY + "=" + session.getAccessToken() + "type=json";
             }
         	
             URL url = new URL(Constants.BASE_URL + URI);
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn = (HttpsURLConnection) url.openConnection();
             conn.setRequestMethod(reqType);
             conn.setHostnameVerifier(hostnameVerifier);
             conn.setRequestProperty("Content-length", "0");
@@ -55,13 +56,11 @@ public class Utils {
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(10000);
             conn.connect();
-            result = new InputStreamReader(conn.getInputStream(), "UTF-8");
-            InputStream in = conn.getInputStream();
         } catch (MalformedURLException ex) {
         	ex.printStackTrace();
         } catch (IOException ex) {
         	ex.printStackTrace();
         }
-        return result ;        
+        return conn;
     }
 }

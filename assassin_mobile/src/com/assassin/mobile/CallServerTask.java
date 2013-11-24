@@ -1,15 +1,12 @@
 package com.assassin.mobile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import javax.net.ssl.HttpsURLConnection;
 
 import android.os.AsyncTask;
 
-class CallServerTask extends AsyncTask<String, Void, InputStreamReader> {
+class CallServerTask extends AsyncTask<String, Void, HttpsURLConnection> {
     @Override
-    protected InputStreamReader doInBackground(String... params) {
+    protected HttpsURLConnection doInBackground(String... params) {
     	boolean authed = false;
     	if (params[1].equals("true")) {
     		authed = true;
@@ -19,7 +16,7 @@ class CallServerTask extends AsyncTask<String, Void, InputStreamReader> {
     }
     // onPostExecute displays the results of the AsyncTask.
     @Override
-    protected void onPostExecute(InputStreamReader result) {
+    protected void onPostExecute(HttpsURLConnection result) {
         ;
    }
 }

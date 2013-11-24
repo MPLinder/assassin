@@ -10,7 +10,7 @@ from allauth.socialaccount.models import SocialLogin, SocialToken, SocialApp
 from allauth.socialaccount.providers.facebook.views import fb_complete_login
 from allauth.socialaccount.helpers import complete_social_login
 
-from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
@@ -59,6 +59,7 @@ def index(request):
 
 
 @get_or_create_fb_user
+@ensure_csrf_cookie
 def attempt(request, attempt_id=None):
     context = {}
     if request.method == 'POST':
