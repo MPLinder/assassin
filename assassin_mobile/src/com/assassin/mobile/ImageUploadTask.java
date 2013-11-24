@@ -28,13 +28,15 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
 
     @Override
     protected Object doInBackground(Object... args) {
+    	
+    	String responseContents = new String();
             
     	String imageLocation = (String) args[0];
     	String URI = (String) args[1];
         String accesToken = (String) args[2];
         HashMap<String, String> params = (HashMap<String, String>) args[3];
         
-        // Get csrftoken and sessionid
+        // Get csrftoken
         HttpsURLConnection response = Utils.callServer(URI, true, "GET");
         
         List<String> cookieList = response.getHeaderFields().get("Set-Cookie");
@@ -47,29 +49,38 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
             }
         }
              
-        // Post image to uri
-    	HostnameVerifier hostnameVerifier = Utils.getHostnameVerifier();
     	
-    	ContentBody contentBody = new FileBody(new File(imageLocation), ContentType.create("image/jpeg"), "image.jpg");
+    	// Get image as POST content
+    	File imageFile = new File(imageLocation);
+    	ContentBody contentBody = new FileBody(new File(imageLocation), ContentType.create("image/jpeg"), imageFile.getName());
     	MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
     	
     	reqEntity.addPart("image", contentBody);
-        for (String param : params.keySet()) {
-        	try {
-				reqEntity.addPart(param, new StringBody(params.get(param)));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
     	
+    	// Add parameters onto post request
+        for (String param : params.keySet()) {
+            try {
+                            reqEntity.addPart(param, new StringBody(params.get(param)));
+                    } catch (UnsupportedEncodingException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                    }
+        }
+        
+        
+    	HostnameVerifier hostnameVerifier = Utils.getHostnameVerifier();
     	HttpsURLConnection conn = null;
         try {
+        	// Set up connection
             URL url = new URL(response.getURL().toString());
             
             conn = (HttpsURLConnection) url.openConnection();
+            
+            // Django requires the csrf token and referer header
+            conn.addRequestProperty("Cookie", "csrftoken=" + cookies.get("csrftoken") +
+					"; sessionid=" + cookies.get("sessionid"));
             conn.addRequestProperty("X-CSRFToken", cookies.get("csrftoken"));
-            System.out.println("****CSRF TOKEN: " + cookies.get("csrftoken"));
+            conn.addRequestProperty("Referer", Constants.BASE_URL);
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.addRequestProperty(reqEntity.getContentType().getName(), reqEntity.getContentType().getValue());
             conn.addRequestProperty("Content-length", reqEntity.getContentLength()+"");
@@ -79,7 +90,8 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setUseCaches(false);
-            
+            conn.setInstanceFollowRedirects(true);
+
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(10000);
             
@@ -87,10 +99,15 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
             reqEntity.writeTo(conn.getOutputStream());
             os.close();
             
+            // Make connection
             conn.connect();
             
             if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                return readStream(conn.getInputStream());
+                responseContents =  readStream(conn.getInputStream());
+                System.out.println("*****Response contents: " + responseContents);
+            } else {
+                responseContents = readStream(conn.getErrorStream());
+                System.out.println("*****Response contents: " + responseContents);
             }
             
         } catch (MalformedURLException ex) {
@@ -98,7 +115,7 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
         } catch (IOException ex) {
         	ex.printStackTrace();
         }
-        return conn;
+        return responseContents;
     }
 
     private static String readStream(InputStream in) {

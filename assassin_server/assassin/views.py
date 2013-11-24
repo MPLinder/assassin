@@ -1,6 +1,7 @@
 import constants
 import json
 import tasks
+import urllib
 from forms import AttemptForm, POCForm
 from functools import wraps
 from models import Attempt, TrainingImage
@@ -68,8 +69,11 @@ def attempt(request, attempt_id=None):
             attempt = form.save(commit=False)
             attempt.from_user = request.user
             attempt.save()
-            return HttpResponseRedirect(reverse('attempt_done',
-                                                kwargs={'attempt_id': attempt.id}))
+
+            url = reverse('attempt_done', kwargs={'attempt_id': attempt.id})
+            return HttpResponseRedirect(url + '?' + urllib.urlencode(request.POST))
+        else:
+            context['form'] = form
     else:
         context['form'] = AttemptForm()
         context['success_percent'] = constants.SUCCESS_PERCENT

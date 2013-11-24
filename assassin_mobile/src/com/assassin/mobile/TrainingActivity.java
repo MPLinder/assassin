@@ -17,7 +17,7 @@ public class TrainingActivity extends Activity {
 		
 		// TODO: this is just a proof of concept, don't actually do this
 		String imageLocation = "/storage/sdcard0/DCIM/browser-photos/1384022398651.jpg";
-		String URI = "attempt";
+		String URI = "attempt/";
 		Session session = Session.getActiveSession();
 		String accessToken = session.getAccessToken();
 		HashMap<String, String> params = new HashMap<String, String>();
