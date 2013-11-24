@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="welcome">Assassin!</string>
     <string name="app_id">554910827916749</string>
+    <string name="startTraining">Get Started!</string>
+    <string name="title_activity_training">TrainingActivity</string>
 
 </resources>
