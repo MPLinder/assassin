@@ -20,6 +20,9 @@ from django.shortcuts import render
 def get_or_create_fb_user(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return view_func(request, *args, **kwargs)
+
         access_token = request.REQUEST.get('access_token', '')
         try:
             app = SocialApp.objects.get(provider='facebook')
@@ -39,6 +42,8 @@ def get_or_create_fb_user(view_func):
 
 def render_response(request, template=None, context=None):
     if request.REQUEST.get('type') == 'json':
+        if context is not None and 'form' in context.keys():
+            context.pop('form')
         return HttpResponse(json.dumps(context), content_type='application/json')
     else:
         return render(request, template, context)
@@ -53,14 +58,42 @@ def index(request):
         return render_response(request, 'assassin/login.html')
 
 
+@get_or_create_fb_user
+def attempt(request, attempt_id=None):
+    context = {}
+    if request.method == 'POST':
+        form = AttemptForm(request.POST, request.FILES)
+        if form.is_valid():
+            attempt = form.save(commit=False)
+            attempt.from_user = request.user
+            attempt.save()
+            return HttpResponseRedirect(reverse('attempt_done',
+                                                kwargs={'attempt_id': attempt.id}))
+    else:
+        context['form'] = AttemptForm()
+        context['success_percent'] = constants.SUCCESS_PERCENT
+
+        if attempt_id:
+            attempt = Attempt.objects.get(id=int(attempt_id))
+            context['attempt_id'] = attempt_id
+            context['attempt_url'] = attempt.image.url
+
+            confidence, success = attempt.get_confidence()
+            context['confidence_level'] = confidence
+            context['success'] = success
+
+    return render_response(request, 'assassin/attempt.html', context)
+
+
 def poc(request, attempt_id=None):
     context = {}
     if request.method == 'POST':
-        request.POST['from_user'] = str(User.objects.get(username='poc_user').id)
         request.POST['to_user'] = str(User.objects.get(username='mplinder').id)
         form = AttemptForm(request.POST, request.FILES)
         if form.is_valid():
-            attempt = form.save()
+            attempt = form.save(commit=False)
+            attempt.from_user = User.objects.get(username='poc_user')
+            attempt.save()
             return HttpResponseRedirect(reverse('poc_done',
                                                 kwargs={'attempt_id': attempt.id}))
     else:

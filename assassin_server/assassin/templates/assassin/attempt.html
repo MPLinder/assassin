@@ -1,0 +1,26 @@
+{% extends "assassin/base.html" %}
+
+{% block content %}
+
+        {% if attempt_id %}
+            <div>You've made an assassination attempt. We calculate that it is
+                {{ confidence_level }}% likely that you hit your target.
+                {% if success %}
+                    You succeeded!
+                {% else %}
+                    {% if confidence_level == '100' %}
+                        We're so confident that this image succeeded that we think you just uploaded a previous image.
+                    {% endif %}
+                    You failed.
+                {% endif %}
+            </div>
+            <div>
+                <img src="{{ attempt_url }}" width="150" height="200" />
+            </div>
+        {% endif %}
+        <form action="{% url 'attempt'%}" enctype="multipart/form-data" method="POST">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <input type="submit" value="Send">
+         </form>
+{% endblock %}

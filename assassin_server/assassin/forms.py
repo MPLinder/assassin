@@ -11,4 +11,4 @@ class POCForm(forms.ModelForm):
 class AttemptForm(forms.ModelForm):
     class Meta:
         model = Attempt
-        fields = ['from_user', 'to_user', 'image', 'comment']
+        fields = ['to_user', 'image', 'comment']
