@@ -69,9 +69,12 @@ def attempt(request, attempt_id=None):
             attempt = form.save(commit=False)
             attempt.from_user = request.user
             attempt.save()
+            context['attempt_id'] = attempt.id
+            context['attempt_url'] = attempt.image.url
 
-            url = reverse('attempt_done', kwargs={'attempt_id': attempt.id})
-            return HttpResponseRedirect(url + '?' + urllib.urlencode(request.POST))
+            confidence, success = attempt.get_confidence()
+            context['confidence_level'] = confidence
+            context['success'] = success
         else:
             context['form'] = form
     else:
