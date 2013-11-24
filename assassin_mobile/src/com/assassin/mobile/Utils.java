@@ -25,7 +25,7 @@ public class Utils {
 	}
 	
 	
-    public static HttpsURLConnection callServer(String URI, boolean authed, String reqType) {
+	public static HostnameVerifier getHostnameVerifier() {
     	HostnameVerifier hostnameVerifier = new HostnameVerifier() {
     	    @Override
     	    public boolean verify(String hostname, SSLSession session) {
@@ -36,6 +36,13 @@ public class Utils {
     	    }
     	};
     	
+    	return hostnameVerifier;
+	}
+	
+	
+    public static HttpsURLConnection callServer(String URI, boolean authed, String reqType) {
+    	HostnameVerifier hostnameVerifier = getHostnameVerifier();
+    	
     	HttpsURLConnection conn = null;
         try {
         	if (authed) {
@@ -43,7 +50,7 @@ public class Utils {
             		URI += "?";
             	}
             	Session session = Session.getActiveSession();
-                URI = URI + Constants.ACCESS_TOKEN_KEY + "=" + session.getAccessToken() + "type=json";
+                URI = URI + Constants.ACCESS_TOKEN_KEY + "=" + session.getAccessToken() + "&type=json";
             }
         	
             URL url = new URL(Constants.BASE_URL + URI);
