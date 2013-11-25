@@ -5,8 +5,14 @@
         </title>
     </head>
     <body>
+        {% if full_name %}
+            <p>Hello, {{ full_name }}</p>
+        {% endif %}
         {% block content %}
 
         {% endblock %}
+        {% if full_name %}
+            <p><a href="/accounts/logout">Logout</a></p>
+        {% endif %}
     </body>
 </html>

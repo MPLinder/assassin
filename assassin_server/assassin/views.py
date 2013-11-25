@@ -2,9 +2,11 @@ import constants
 import json
 import tasks
 import urllib
-from forms import AttemptForm, POCForm
 from functools import wraps
-from models import Attempt, TrainingImage
+
+import forms
+import models
+import utils
 
 from allauth.socialaccount import providers
 from allauth.socialaccount.models import SocialLogin, SocialToken, SocialApp
@@ -14,7 +16,7 @@ from allauth.socialaccount.helpers import complete_social_login
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render
 
 
@@ -41,6 +43,11 @@ def get_or_create_fb_user(view_func):
     return _wrapped_view
 
 
+def base_context(request):
+    context = {'full_name': request.user.get_full_name()}
+    return context
+
+
 def render_response(request, template=None, context=None):
     if request.REQUEST.get('type') == 'json':
         if context is not None and 'form' in context.keys():
@@ -52,19 +59,44 @@ def render_response(request, template=None, context=None):
 
 @get_or_create_fb_user
 def index(request):
-    if request.user.is_authenticated():
-        context = {'full_name': request.user.get_full_name()}
-        return render_response(request, 'assassin/index.html', context)
+    if utils.is_trained(request.user):
+        # TODO: redirect to wherever when it's ready
+        return HttpResponseRedirect(reverse('train'))
     else:
-        return render_response(request, 'assassin/login.html')
+        return HttpResponseRedirect(reverse('train'))
+
+
+@get_or_create_fb_user
+def train(request):
+    context = base_context(request)
+    if request.method == 'POST':
+        form = forms.TrainingImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            trainer = form.save(commit=False)
+            trainer.user = request.user
+            trainer.save()
+
+            context['status'] = 'success'
+        else:
+            context['status'] = 'error'
+            context['errors'] = form.errors
+
+        context['form'] = form
+    else:
+        form = forms.TrainingImageForm()
+        context['form'] = form
+
+    context['trainers_completed'] = models.TrainingImage.objects.filter(user=request.user).count()
+    context['trainers_required'] = constants.TRAINING_IMAGES_REQUIRED
+    return render_response(request, template='assassin/train.html', context=context)
 
 
 @get_or_create_fb_user
 @ensure_csrf_cookie
 def attempt(request, attempt_id=None):
-    context = {}
+    context = base_context(request)
     if request.method == 'POST':
-        form = AttemptForm(request.POST, request.FILES)
+        form = forms.AttemptForm(request.POST, request.FILES)
         if form.is_valid():
             attempt = form.save(commit=False)
             attempt.from_user = request.user
@@ -78,11 +110,11 @@ def attempt(request, attempt_id=None):
         else:
             context['form'] = form
     else:
-        context['form'] = AttemptForm()
+        context['form'] = forms.AttemptForm()
         context['success_percent'] = constants.SUCCESS_PERCENT
 
         if attempt_id:
-            attempt = Attempt.objects.get(id=int(attempt_id))
+            attempt = models.Attempt.objects.get(id=int(attempt_id))
             context['attempt_id'] = attempt_id
             context['attempt_url'] = attempt.image.url
 
@@ -97,7 +129,7 @@ def poc(request, attempt_id=None):
     context = {}
     if request.method == 'POST':
         request.POST['to_user'] = str(User.objects.get(username='mplinder').id)
-        form = AttemptForm(request.POST, request.FILES)
+        form = forms.AttemptForm(request.POST, request.FILES)
         if form.is_valid():
             attempt = form.save(commit=False)
             attempt.from_user = User.objects.get(username='poc_user')
@@ -106,13 +138,13 @@ def poc(request, attempt_id=None):
                                                 kwargs={'attempt_id': attempt.id}))
     else:
         mplinder = User.objects.get(username='mplinder')
-        imgs = TrainingImage.objects.filter(user=mplinder)
+        imgs = models.TrainingImage.objects.filter(user=mplinder)
         context['img_urls'] = [img.image.url for img in imgs]
-        context['form'] = POCForm()
+        context['form'] = forms.POCForm()
         context['success_percent'] = constants.SUCCESS_PERCENT
 
         if attempt_id:
-            attempt = Attempt.objects.get(id=int(attempt_id))
+            attempt = models.Attempt.objects.get(id=int(attempt_id))
             context['attempt_id'] = attempt_id
             context['attempt_url'] = attempt.image.url
 

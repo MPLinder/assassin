@@ -1,0 +1,15 @@
+{% extends "assassin/base.html" %}
+
+{% block content %}
+    {% if trainers_completed >= trainers_required %}
+        <p>Congratulations, you're done training! Now go assassinate someone!</p>
+    {% else %}
+        <p>You've completed {{ trainers_completed }} out of {{ trainers_required }} required training sessions.<p>
+        <p>Complete another session:</p>
+        <form action="{% url 'train'%}" enctype="multipart/form-data" method="POST">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <input type="submit" value="Send">
+        </form>
+    {% endif %}
+{% endblock %}

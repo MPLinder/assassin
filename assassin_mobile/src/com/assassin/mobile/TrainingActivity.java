@@ -1,6 +1,7 @@
 package com.assassin.mobile;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import com.facebook.Session;
 
@@ -22,7 +23,16 @@ public class TrainingActivity extends Activity {
 		String accessToken = session.getAccessToken();
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("to_user", "1");
-		new ImageUploadTask().execute(imageLocation, URI, accessToken, params);
+		try {
+			String output = (String) new ImageUploadTask().execute(imageLocation, URI, accessToken, params).get();
+			System.out.println("****AsyncTask output: " + output);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	

@@ -2,6 +2,9 @@ import cv2
 import numpy
 import sys
 
+import constants
+import models
+
 from django.conf import settings
 
 
@@ -63,3 +66,8 @@ def scale(val, src, dst):
     Scale the given value from the scale of src to the scale of dst.
     """
     return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
+
+
+def is_trained(user):
+    return models.TrainingImage.objects.filter(user=user).count() >= \
+           constants.TRAINING_IMAGES_REQUIRED
