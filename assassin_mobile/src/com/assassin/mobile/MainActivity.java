@@ -51,10 +51,4 @@ public class MainActivity extends FragmentActivity {
         Intent intent = new Intent(MainActivity.this, TrainingActivity.class);           
         startActivity(intent);
     }
-    
-    public void hideTraining() {
-        Button startTraining = (Button) findViewById(R.id.startTraining);
-        startTraining.setVisibility(View.GONE);
-    }
-    
 }

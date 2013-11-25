@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -39,14 +40,17 @@ public class MainFragment extends Fragment {
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		Button startTraining = (Button) getActivity().findViewById(R.id.startTraining);
+		TextView trainingAnnouncement = (TextView) getActivity().findViewById(R.id.trainingAnnouncement);
 	    if (state.isOpened()) {
 	        Log.i(TAG, "Logged in...");
 	        Log.i(TAG, session.getAccessToken());
 	        new CallServerTask().execute("", "true", "GET");
 	        startTraining.setVisibility(View.VISIBLE);
+	        trainingAnnouncement.setVisibility(View.VISIBLE);
 	    } else if (state.isClosed()) {
 	        Log.i(TAG, "Logged out...");
             startTraining.setVisibility(View.GONE);
+            trainingAnnouncement.setVisibility(View.GONE);
 	    }
 	}
 	
