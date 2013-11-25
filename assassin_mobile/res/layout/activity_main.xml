@@ -23,6 +23,24 @@
         android:layout_marginBottom="22dp"
         android:onClick="startTraining"
         android:text="@string/startTraining" />
+    
+    <Button
+        android:id="@+id/showLeaderboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="22dp"
+        android:onClick="showLeaderboard"
+        android:text="@string/showLeaderboard" />
+    
+    <Button
+        android:id="@+id/assassinate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="22dp"
+        android:onClick="startCamera"
+        android:text="@string/assassinate" />
         
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"

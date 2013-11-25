@@ -37,7 +37,7 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
         HashMap<String, String> params = (HashMap<String, String>) args[3];
         
         // Get csrftoken
-        HttpsURLConnection response = Utils.callServer(URI, true, "GET");
+        HttpsURLConnection response = Utils.getServerConnection(URI, true, "GET");
         
         List<String> cookieList = response.getHeaderFields().get("Set-Cookie");
         HashMap<String, String> cookies = new HashMap<String, String>();
@@ -103,42 +103,21 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
             conn.connect();
             
             if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                responseContents =  readStream(conn.getInputStream());
-                System.out.println("*****Response contents: " + responseContents);
+                responseContents =  Utils.readStream(conn.getInputStream());
+                System.out.println("*****Image Upload response contents: " + responseContents);
             } else {
-                responseContents = readStream(conn.getErrorStream());
-                System.out.println("*****Response contents: " + responseContents);
+                responseContents = Utils.readStream(conn.getErrorStream());
+                System.out.println("*****Image Upload response contents: " + responseContents);
             }
+            conn.disconnect();
             
         } catch (MalformedURLException ex) {
         	ex.printStackTrace();
         } catch (IOException ex) {
         	ex.printStackTrace();
         }
+        response.disconnect();
         return responseContents;
-    }
-
-    private static String readStream(InputStream in) {
-        BufferedReader reader = null;
-        StringBuilder builder = new StringBuilder();
-        try {
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return builder.toString();
     }
 
 }

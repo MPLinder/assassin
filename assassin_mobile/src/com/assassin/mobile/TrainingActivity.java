@@ -25,7 +25,7 @@ public class TrainingActivity extends Activity {
 		params.put("to_user", "1");
 		try {
 			String output = (String) new ImageUploadTask().execute(imageLocation, URI, accessToken, params).get();
-			System.out.println("****AsyncTask output: " + output);
+			System.out.println("****Image Upload output: " + output);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

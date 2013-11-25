@@ -1,12 +1,12 @@
 package com.assassin.mobile;
 
-import javax.net.ssl.HttpsURLConnection;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
 
-class CallServerTask extends AsyncTask<String, Void, HttpsURLConnection> {
+class CallServerTask extends AsyncTask<String, Void, JSONObject> {
     @Override
-    protected HttpsURLConnection doInBackground(String... params) {
+    protected JSONObject doInBackground(String... params) {
     	boolean authed = false;
     	if (params[1].equals("true")) {
     		authed = true;
@@ -16,7 +16,7 @@ class CallServerTask extends AsyncTask<String, Void, HttpsURLConnection> {
     }
     // onPostExecute displays the results of the AsyncTask.
     @Override
-    protected void onPostExecute(HttpsURLConnection result) {
+    protected void onPostExecute(JSONObject result) {
         ;
    }
 }

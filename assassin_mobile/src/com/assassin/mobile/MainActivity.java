@@ -51,4 +51,14 @@ public class MainActivity extends FragmentActivity {
         Intent intent = new Intent(MainActivity.this, TrainingActivity.class);           
         startActivity(intent);
     }
+    
+    public void showLeaderboard(View view) {
+        // TODO: start leaderboard view when I have it
+    	;
+    }
+    
+    public void startCamera(View view) {
+        // TODO: start camera
+    	;
+    }
 }

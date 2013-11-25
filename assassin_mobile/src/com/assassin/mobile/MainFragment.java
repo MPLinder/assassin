@@ -1,5 +1,9 @@
 package com.assassin.mobile;
 
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,18 +43,45 @@ public class MainFragment extends Fragment {
 	}
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+		Button showLeaderboard = (Button) getActivity().findViewById(R.id.showLeaderboard);
+		Button assassinate = (Button) getActivity().findViewById(R.id.assassinate);
 		Button startTraining = (Button) getActivity().findViewById(R.id.startTraining);
 		TextView trainingAnnouncement = (TextView) getActivity().findViewById(R.id.trainingAnnouncement);
 	    if (state.isOpened()) {
 	        Log.i(TAG, "Logged in...");
 	        Log.i(TAG, session.getAccessToken());
-	        new CallServerTask().execute("", "true", "GET");
-	        startTraining.setVisibility(View.VISIBLE);
-	        trainingAnnouncement.setVisibility(View.VISIBLE);
+	        
+	        JSONObject response = null;
+	        try {
+				response = new CallServerTask().execute("train/", "true", "GET").get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+	        System.out.println("******Main call server response: " + response);
+	        boolean isTrained = Utils.isTrained(response);
+	        
+	        if (isTrained) {
+	        	showLeaderboard.setVisibility(View.VISIBLE);
+		        assassinate.setVisibility(View.VISIBLE);
+		        startTraining.setVisibility(View.GONE);
+		        trainingAnnouncement.setVisibility(View.GONE);
+	        } else {
+	        	showLeaderboard.setVisibility(View.GONE);
+		        assassinate.setVisibility(View.GONE);
+		        startTraining.setVisibility(View.VISIBLE);
+		        trainingAnnouncement.setVisibility(View.VISIBLE);
+	        }
 	    } else if (state.isClosed()) {
 	        Log.i(TAG, "Logged out...");
             startTraining.setVisibility(View.GONE);
             trainingAnnouncement.setVisibility(View.GONE);
+            showLeaderboard.setVisibility(View.GONE);
+            assassinate.setVisibility(View.GONE);
 	    }
 	}
 	
