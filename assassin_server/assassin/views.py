@@ -98,16 +98,17 @@ def friends(request):
     friends = []
     for friend in fb_friends:
         try:
-            SocialAccount.objects.get(provider='facebook',
-                                      uid=friend['id'])
+            social_account = SocialAccount.objects.get(provider='facebook',
+                                                       uid=friend['id'])
         except SocialAccount.DoesNotExist:
             continue
 
-        friends.append({
-            'name': friend['name'],
-            'id': friend['id'],
-            'picture': friend['picture']['data']['url']
-        })
+        if utils.is_trained(social_account.user):
+            friends.append({
+                'name': friend['name'],
+                'id': friend['id'],
+                'picture': friend['picture']['data']['url']
+            })
 
     return render_response(request, context={'friends': friends})
 
