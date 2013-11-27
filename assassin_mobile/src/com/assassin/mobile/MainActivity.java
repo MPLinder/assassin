@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.webkit.CookieSyncManager;
-import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.facebook.Session;
 
@@ -57,8 +58,8 @@ public class MainActivity extends FragmentActivity {
     	;
     }
     
-    public void startCamera(View view) {
-        // TODO: start camera
-    	;
+    public void makeAttempt(View view) {
+    	Intent intent = new Intent(MainActivity.this, AttemptActivity.class);
+    	startActivity(intent);
     }
 }

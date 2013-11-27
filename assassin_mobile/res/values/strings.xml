@@ -8,12 +8,10 @@
     <string name="app_id">554910827916749</string>
     <string name="startTraining">Get Started!</string>
     <string name="title_activity_training">TrainingActivity</string>
-    
-    <string name="trainingAnnouncement">
-        Ready to assassinate your friends? Not yet! You must go through training first.
-    </string>
-    
+    <string name="trainingAnnouncement">        Ready to assassinate your friends? Not yet! You must go through training first.</string>
     <string name="showLeaderboard">Go To Leaderboard</string>
     <string name="assassinate">Assassinate!</string>
+    <string name="title_activity_attempt">AttemptActivity</string>
+    <string name="attemptDescription">An assassination attempt</string>
 
 </resources>

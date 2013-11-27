@@ -47,9 +47,11 @@ public class MainFragment extends Fragment {
 		Button assassinate = (Button) getActivity().findViewById(R.id.assassinate);
 		Button startTraining = (Button) getActivity().findViewById(R.id.startTraining);
 		TextView trainingAnnouncement = (TextView) getActivity().findViewById(R.id.trainingAnnouncement);
-	    if (state.isOpened()) {
+	    
+		if (state.isOpened()) {
 	        Log.i(TAG, "Logged in...");
 	        Log.i(TAG, session.getAccessToken());
+	        ;
 	        
 	        JSONObject response = null;
 	        try {

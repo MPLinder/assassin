@@ -1,5 +1,6 @@
 import cv2
 import numpy
+import requests
 import sys
 
 import constants
@@ -71,3 +72,22 @@ def scale(val, src, dst):
 def is_trained(user):
     return models.TrainingImage.objects.filter(user=user).count() >= \
            constants.TRAINING_IMAGES_REQUIRED
+
+
+def get_fb_friends(user):
+    social_account = user.socialaccount_set.get(provider='facebook')
+    token = social_account.socialtoken_set.all()[0]
+
+    url = settings.FACEBOOK_FRIENDS_URL.format(social_account.uid)
+    params = {
+        'access_token': token.token,
+        'fields': 'name,id,picture'
+    }
+
+    friends = []
+    while url:
+        resp = requests.get(url=url, params=params).json()
+        friends.extend(resp.get('data', []))
+        url = resp['paging'].get('next')
+
+    return friends

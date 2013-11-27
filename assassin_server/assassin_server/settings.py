@@ -120,6 +120,9 @@ EMAIL_HOST_PASSWORD = 'mailbox_password'
 DEFAULT_FROM_EMAIL = 'valid_email_address'
 SERVER_EMAIL = 'valid_email_address'
 
+FACEBOOK_GRAPH_URL = 'https://graph.facebook.com/'
+FACEBOOK_FRIENDS_URL = FACEBOOK_GRAPH_URL + '{0}/friends/'
+
 try:
     from settings_local import *
 except ImportError:

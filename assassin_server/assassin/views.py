@@ -9,7 +9,7 @@ import models
 import utils
 
 from allauth.socialaccount import providers
-from allauth.socialaccount.models import SocialLogin, SocialToken, SocialApp
+from allauth.socialaccount.models import SocialLogin, SocialToken, SocialApp, SocialAccount
 from allauth.socialaccount.providers.facebook.views import fb_complete_login
 from allauth.socialaccount.helpers import complete_social_login
 
@@ -89,6 +89,27 @@ def train(request):
     context['trainers_completed'] = models.TrainingImage.objects.filter(user=request.user).count()
     context['trainers_required'] = constants.TRAINING_IMAGES_REQUIRED
     return render_response(request, template='assassin/train.html', context=context)
+
+
+@get_or_create_fb_user
+def friends(request):
+    fb_friends = utils.get_fb_friends(request.user)
+
+    friends = []
+    for friend in fb_friends:
+        try:
+            SocialAccount.objects.get(provider='facebook',
+                                      uid=friend['id'])
+        except SocialAccount.DoesNotExist:
+            continue
+
+        friends.append({
+            'name': friend['name'],
+            'id': friend['id'],
+            'picture': friend['picture']['data']['url']
+        })
+
+    return render_response(request, context={'friends': friends})
 
 
 @get_or_create_fb_user
