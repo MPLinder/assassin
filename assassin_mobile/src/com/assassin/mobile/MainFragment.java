@@ -64,7 +64,6 @@ public class MainFragment extends Fragment {
 				e.printStackTrace();
 			}
 	        
-	        System.out.println("******Main call server response: " + response);
 	        boolean isTrained = Utils.isTrained(response);
 	        
 	        if (isTrained) {

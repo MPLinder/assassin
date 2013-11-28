@@ -13,5 +13,5 @@
     <string name="assassinate">Assassinate!</string>
     <string name="title_activity_attempt">AttemptActivity</string>
     <string name="attemptDescription">An assassination attempt</string>
-
+   
 </resources>

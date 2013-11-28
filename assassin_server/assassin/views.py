@@ -106,7 +106,7 @@ def friends(request):
         if utils.is_trained(social_account.user):
             friends.append({
                 'name': friend['name'],
-                'id': friend['id'],
+                'id': social_account.user.id,
                 'picture': friend['picture']['data']['url']
             })
 

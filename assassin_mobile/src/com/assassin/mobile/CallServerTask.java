@@ -11,7 +11,7 @@ class CallServerTask extends AsyncTask<String, Void, JSONObject> {
     	if (params[1].equals("true")) {
     		authed = true;
     	}
-
+    	System.out.println("**** calling server via utils");
         return Utils.callServer(params[0], authed, params[2]);
     }
     // onPostExecute displays the results of the AsyncTask.
