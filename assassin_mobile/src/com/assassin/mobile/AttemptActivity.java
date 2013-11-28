@@ -1,7 +1,8 @@
 package com.assassin.mobile;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
@@ -18,10 +19,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
 
 public class AttemptActivity extends Activity {
 	final Context context = this;
@@ -58,7 +59,6 @@ public class AttemptActivity extends Activity {
 		    	
 		    	button = (Button) findViewById(R.id.buttonAlert);
 		    	
-		    	
 		    	// add button listener
 				button.setOnClickListener(new OnClickListener() {
 		 
@@ -69,35 +69,30 @@ public class AttemptActivity extends Activity {
 						context);
 		 
 					// set title
-					alertDialogBuilder.setTitle("Who is this?");
-		 
+					alertDialogBuilder.setTitle(R.string.whoIsThis);
 					
-					
-					// set dialog message
 					alertDialogBuilder
+						.setSingleChoiceItems(getVictimAdapter(), -1, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								// The 'which' argument contains the index position
+								// of the selected item
+							}
+						})
 						.setCancelable(false)
-						.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+						.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,int id) {
-								// if this button is clicked, close
-								// current activity
-								AttemptActivity.this.finish();
+								// actually do something with the data here
+								dialog.cancel();
 							}
 						  })
-						.setNegativeButton("No",new DialogInterface.OnClickListener() {
+						.setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,int id) {
 								// if this button is clicked, just close
 								// the dialog box and do nothing
 								dialog.cancel();
 							}
-						})
-						.setAdapter(getVictimAdapter(), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-					               // The 'which' argument contains the index position
-					               // of the selected item
-					        }
 						});
-						
-		 
+
 						// create alert dialog
 						AlertDialog alertDialog = alertDialogBuilder.create();
 		 
@@ -106,51 +101,36 @@ public class AttemptActivity extends Activity {
 					}
 				});
 			}
-//		    	
-//		    	addVictims();
-//		    	addListenerOnButton();
-	    	}
-	    	 
-	    }  
+	    }	 
+	}  
 	
 	private ListAdapter getVictimAdapter(){
-		List<String> list = new ArrayList<String>();
+		ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
 		for (int i = 0; i < this.friends.length(); i++) {
 			  try {
-				list.add((String) this.friends.getJSONObject(i).get("name"));
+				  HashMap<String, String> data = new HashMap<String, String>();
+				  String name = (String) this.friends.getJSONObject(i).get("name");
+				  data.put("name", name);
+				  String id = (String) this.friends.getJSONObject(i).get("id");
+				  data.put("id", id);
+				  String picture = (String) this.friends.getJSONObject(i).get("picture");
+				  data.put("picture", picture);
+				  
+				  list.add(data);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		ListAdapter dataAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, list);
-//		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		String[] from = {"name", "id", "picture"};
+		int[] to = {R.id.name, R.id.user_id, R.id.picture};
+		ListAdapter dataAdapter = new SimpleAdapter(this, list, R.layout.friend_list, from, to);
+		System.out.println("*****ArrayList: " + list);
 		return dataAdapter;
 	}
-	
-//	public void addListenerOnButton() {
-//		  
-//			victimSelector = (Spinner) findViewById(R.id.victimSelector);
-//			btnSubmit = (Button) findViewById(R.id.btnSubmit);
-//		 
-//			btnSubmit.setOnClickListener(new OnClickListener() {
-//		 
-//			  @Override
-//			  public void onClick(View v) {
-//		 
-//			    Toast.makeText(AttemptActivity.this,
-//				"OnClickListener : " + 
-//		                "\nSpinner 1 : "+ String.valueOf(victimSelector.getSelectedItem()) + 
-//					Toast.LENGTH_SHORT, 0).show();
-//			  }
-//		 
-//			});
-//	}
-		
-	
+			
 	private void friendsCallback(JSONObject friends) {
 		JSONArray friendsArray = new JSONArray();
 		try {
