@@ -121,8 +121,10 @@ public class AttemptActivity extends Activity {
 		 
 						// show it
 						alertDialog.show();
-					}
-				};
+	    	} else {
+	    		finish();
+	    	}
+		};
 	 
 	}  
 	
@@ -169,6 +171,13 @@ public class AttemptActivity extends Activity {
 				}
 				
 			}
+			
+			// For testing only. Increases number of entries in AlertDialog
+//			for (int i=0; i<20; i++) {
+//				this.friends.put(this.friends.get(0));
+//				this.friendPics.add(this.friendPics.get(0));
+//			}
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
