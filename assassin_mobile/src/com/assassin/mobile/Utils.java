@@ -167,8 +167,6 @@ public class Utils {
                     try {
                     	String[] parts = url.split("/");
                     	String filename = parts[parts.length - 1];
-                    	System.out.println("******Directory: " + directory);
-                    	System.out.println("******Filename:" + filename);
                         FileOutputStream out = new FileOutputStream(directory + "/" + filename);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                         out.close();
