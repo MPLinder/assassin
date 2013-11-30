@@ -247,16 +247,16 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f04001d;
         public static final int imageResult=0x7f040003;
         public static final int large=0x7f040002;
-        public static final int name=0x7f04001f;
+        public static final int name=0x7f040020;
         public static final int normal=0x7f040001;
         public static final int picker_subtitle=0x7f040019;
-        public static final int picture=0x7f040021;
+        public static final int picture=0x7f04001f;
         public static final int progress_bar=0x7f040022;
         public static final int showLeaderboard=0x7f040007;
         public static final int small=0x7f040000;
         public static final int startTraining=0x7f040006;
         public static final int trainingAnnouncement=0x7f040005;
-        public static final int user_id=0x7f040020;
+        public static final int user_id=0x7f040021;
     }
     public static final class layout {
         public static final int activity_attempt=0x7f030000;

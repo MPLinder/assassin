@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,11 +29,12 @@ public class AttemptActivity extends Activity {
 	final Context context = this;
 	private Button button;
 	private JSONArray friends;
+	private ArrayList<String> friendPics;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+				
 		getFriends();
 		
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -114,8 +116,8 @@ public class AttemptActivity extends Activity {
 				  data.put("name", name);
 				  String id = (String) this.friends.getJSONObject(i).get("id");
 				  data.put("id", id);
-				  String picture = (String) this.friends.getJSONObject(i).get("picture");
-				  data.put("picture", picture);
+
+				  data.put("picture", friendPics.get(i));
 				  
 				  list.add(data);
 			} catch (JSONException e) {
@@ -127,19 +129,31 @@ public class AttemptActivity extends Activity {
 		String[] from = {"name", "id", "picture"};
 		int[] to = {R.id.name, R.id.user_id, R.id.picture};
 		ListAdapter dataAdapter = new SimpleAdapter(this, list, R.layout.friend_list, from, to);
-		System.out.println("*****ArrayList: " + list);
 		return dataAdapter;
 	}
 			
 	private void friendsCallback(JSONObject friends) {
-		JSONArray friendsArray = new JSONArray();
 		try {
 			this.friends = friends.getJSONArray("friends");
+			this.friendPics = new ArrayList<String>();
+			
+			for (int i = 0; i < this.friends.length(); i++) {
+				String picture = (String) this.friends.getJSONObject(i).get("picture");
+				  
+				String bitmap = Utils.downloadBitmap(picture, getCacheDir().toString());
+
+				if (bitmap != null) {
+					this.friendPics.add(String.valueOf(bitmap));
+				} else {
+					this.friendPics.add(String.valueOf(R.drawable.assassin_launcher));
+				}
+				
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(this.friends);
+		
 	}
 	
 	private void getFriends() {

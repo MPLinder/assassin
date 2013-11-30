@@ -1,6 +1,7 @@
 package com.assassin.mobile;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,8 +12,18 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.net.http.AndroidHttpClient;
+import android.util.Log;
 
 import com.facebook.Session;
 
@@ -132,5 +143,56 @@ public class Utils {
 			e.printStackTrace();
 			return false;
 		}
+    }
+    
+    static String downloadBitmap(String url, String directory) {
+        final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+        final HttpGet getRequest = new HttpGet(url);
+
+        try {
+            HttpResponse response = client.execute(getRequest);
+            final int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) { 
+                Log.w("ImageDownloader", "Error " + statusCode + " while retrieving bitmap from " + url); 
+                return null;
+            }
+            
+            final HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                InputStream inputStream = null;
+                try {
+                    inputStream = entity.getContent(); 
+                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    
+                    try {
+                    	String[] parts = url.split("/");
+                    	String filename = parts[parts.length - 1];
+                    	System.out.println("******Directory: " + directory);
+                    	System.out.println("******Filename:" + filename);
+                        FileOutputStream out = new FileOutputStream(directory + "/" + filename);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.close();
+                        return Uri.parse(directory + "/" + filename).toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
+                } finally {
+                    if (inputStream != null) {
+                        inputStream.close();  
+                    }
+                    entity.consumeContent();
+                }
+            }
+        } catch (Exception e) {
+            // Could provide a more explicit error message for IOException or IllegalStateException
+            getRequest.abort();
+            Log.w("ImageDownloader", "Error while retrieving bitmap from " + url, e);
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+        return null;
     }
 }
