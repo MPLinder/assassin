@@ -21,9 +21,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
@@ -31,7 +32,6 @@ import com.facebook.Session;
 
 public class AttemptActivity extends Activity {
 	final Context context = this;
-	private Button button;
 	private JSONArray friends;
 	private ArrayList<String> friendPics;
 	private Bitmap attempt;
@@ -75,8 +75,7 @@ public class AttemptActivity extends Activity {
 		    	ImageView image = (ImageView) findViewById(R.id.imageResult); 
 		    	image.setImageBitmap(this.attempt);
 		 
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-					context);
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 	 
 				// set title
 				alertDialogBuilder.setTitle(R.string.whoIsThis);
@@ -93,7 +92,17 @@ public class AttemptActivity extends Activity {
 					.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,int id) {
 							if (AttemptActivity.this.which != null) {
+
+						    	ImageView image = (ImageView) findViewById(R.id.imageResult); 
+						    	ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar); 
+						    	
+						    	image.setVisibility(View.GONE);
+						    	progressBar.setVisibility(View.VISIBLE);
+								
 								sendAttempt();
+							} else {
+								Toast.makeText(context, "No target selected. Assassiation attempt aborted.", Toast.LENGTH_LONG).show();
+								finish();
 							}
 						}
 					  })
@@ -193,46 +202,51 @@ public class AttemptActivity extends Activity {
 		}).start();
 	}
 	
-    public void sendAttempt() {
-    	setContentView(R.layout.progressbar_activity);
-    	
-		String URI = "attempt/";
-		Session session = Session.getActiveSession();
-		String accessToken = session.getAccessToken();
-		HashMap<String, String> params = new HashMap<String, String>();
-		try {
-			String to_user = (String)this.friends.getJSONObject(this.which).get("id");
-			params.put("to_user", to_user);
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			// TODO: actually throw error here
-			e1.printStackTrace();
-		}
-		
-		JSONObject output = null;
-		try {
-			String outputStr = (String) new ImageUploadTask().execute(this.attemptUri, URI, accessToken, params).get();
-			output = new JSONObject(outputStr);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		new File(this.attemptUri).delete();
-		
-		if (output == null) {
-			Toast.makeText(this, "Unable to upload attempt. Please try again.", Toast.LENGTH_LONG).show();
-			finish();
-		} else {
-			finish();
-		}
-		
-		
+    public void sendAttempt() {    		
+		new Thread(new Runnable() {
+			public void run() {
+				String URI = "attempt/";
+				Session session = Session.getActiveSession();
+				String accessToken = session.getAccessToken();
+				HashMap<String, String> params = new HashMap<String, String>();
+				try {
+					String to_user = (String)friends.getJSONObject(which).get("id");
+					params.put("to_user", to_user);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					// TODO: actually throw error here
+					e1.printStackTrace();
+				}
+				
+				JSONObject output = null;
+				try {
+					String outputStr = (String) new ImageUploadTask().execute(attemptUri, URI, accessToken, params).get();
+					output = new JSONObject(outputStr);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				new File(attemptUri).delete();
+				
+				if (output == null) {
+					Toast.makeText(context, "Unable to upload attempt. Please try again.", Toast.LENGTH_LONG).show();
+					finish();
+				}
+				
+				attemptOutputCallback(output);
+			}
+		}).start();
 	}
+    
+    public void attemptOutputCallback(JSONObject attempt) {
+    	//TODO: start result activity here
+    	System.out.println("*****output callback called");
+    }
 }
