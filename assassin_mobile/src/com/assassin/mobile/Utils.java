@@ -1,6 +1,7 @@
 package com.assassin.mobile;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,10 +20,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.net.http.AndroidHttpClient;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.util.Log;
 
 import com.facebook.Session;

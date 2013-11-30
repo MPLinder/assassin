@@ -86,8 +86,13 @@ def train(request):
         form = forms.TrainingImageForm()
         context['form'] = form
 
-    context['trainers_completed'] = models.TrainingImage.objects.filter(user=request.user).count()
+    trainers_completed = models.TrainingImage.objects.filter(user=request.user).count()
+    context['trainers_completed'] = trainers_completed
     context['trainers_required'] = constants.TRAINING_IMAGES_REQUIRED
+
+    if trainers_completed >= constants.TRAINING_IMAGES_REQUIRED:
+        tasks.train.delay(request.user)
+        
     return render_response(request, template='assassin/train.html', context=context)
 
 
@@ -106,7 +111,7 @@ def friends(request):
         if utils.is_trained(social_account.user):
             friends.append({
                 'name': friend['name'],
-                'id': social_account.user.id,
+                'id': str(social_account.user.id),
                 'picture': friend['picture']['data']['url']
             })
 
