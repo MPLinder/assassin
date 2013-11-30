@@ -46,12 +46,11 @@ public class MainFragment extends Fragment {
 		Button showLeaderboard = (Button) getActivity().findViewById(R.id.showLeaderboard);
 		Button assassinate = (Button) getActivity().findViewById(R.id.assassinate);
 		Button startTraining = (Button) getActivity().findViewById(R.id.startTraining);
-		TextView trainingAnnouncement = (TextView) getActivity().findViewById(R.id.trainingAnnouncement);
+		TextView instructions = (TextView) getActivity().findViewById(R.id.instructions);
 	    
 		if (state.isOpened()) {
 	        Log.i(TAG, "Logged in...");
 	        Log.i(TAG, session.getAccessToken());
-	        ;
 	        
 	        JSONObject response = null;
 	        try {
@@ -70,19 +69,22 @@ public class MainFragment extends Fragment {
 	        	showLeaderboard.setVisibility(View.VISIBLE);
 		        assassinate.setVisibility(View.VISIBLE);
 		        startTraining.setVisibility(View.GONE);
-		        trainingAnnouncement.setVisibility(View.GONE);
+		        instructions.setVisibility(View.VISIBLE);
+		        instructions.setText(R.string.veteranInstructions);
 	        } else {
 	        	showLeaderboard.setVisibility(View.GONE);
 		        assassinate.setVisibility(View.GONE);
 		        startTraining.setVisibility(View.VISIBLE);
-		        trainingAnnouncement.setVisibility(View.VISIBLE);
+		        instructions.setVisibility(View.VISIBLE);
+		        instructions.setText(R.string.trainingInstructions);
 	        }
 	    } else if (state.isClosed()) {
 	        Log.i(TAG, "Logged out...");
             startTraining.setVisibility(View.GONE);
-            trainingAnnouncement.setVisibility(View.GONE);
             showLeaderboard.setVisibility(View.GONE);
             assassinate.setVisibility(View.GONE);
+            instructions.setVisibility(View.VISIBLE);
+            instructions.setText(R.string.introInstructions);
 	    }
 	}
 	

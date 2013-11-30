@@ -12,19 +12,18 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
+        android:layout_height="226dp"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:layout_weight="0.61"
         android:contentDescription="@string/app_name"
         android:src="@drawable/logo" />
-    
+
     <TextView
-        android:id="@+id/trainingAnnouncement"
+        android:id="@+id/instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/trainingAnnouncement" 
-        android:visibility="gone" />
-    
+        android:gravity="center"
+        android:text="@string/introInstructions" />
+
     <Button
         android:id="@+id/startTraining"
         style="@style/ButtonText"
@@ -36,7 +35,7 @@
         android:onClick="startTraining"
         android:text="@string/startTraining"
         android:visibility="gone" />
-   
+
     <Button
         android:id="@+id/assassinate"
         style="@style/ButtonText"
@@ -48,19 +47,19 @@
         android:onClick="makeAttempt"
         android:text="@string/assassinate"
         android:visibility="gone" />
-        
+
     <Button
         android:id="@+id/showLeaderboard"
+        style="@style/ButtonText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="22dp"
+        android:background="@drawable/btn_red"
         android:onClick="showLeaderboard"
         android:text="@string/showLeaderboard"
-        android:background="@drawable/btn_red"
-        style="@style/ButtonText"
-        android:visibility="gone"  />
-   
+        android:visibility="gone" />
+
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
         android:layout_width="match_parent"

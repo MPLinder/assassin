@@ -2,13 +2,16 @@
 <resources>
 
     <string name="app_name">Assassin!</string>
+    <string name="tagline">The game of intrigue and espionage!</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="welcome">Assassin!</string>
     <string name="app_id">554910827916749</string>
     <string name="startTraining">Get Started!</string>
     <string name="title_activity_training">TrainingActivity</string>
-    <string name="trainingAnnouncement">Ready to assassinate your friends? Not yet! You must go through training first.</string>
+    <string name="trainingInstructions">Before you can become a true assassin, you must train. We require at least three pictures of you in order to determine the success of an assassination attempt. Start training now!</string>
+    <string name="introInstructions">Assassin! uses face recognition technology to allow you go take pictures of your friends and earn points, but you have to be sneaky! Sign in with Facebook to get started!</string>
+    <string name="veteranInstructions">Assassin! the game of intrigue and espionage.</string>
     <string name="showLeaderboard">Leaderboard</string>
     <string name="assassinate">Assassinate!</string>
     <string name="title_activity_attempt">AttemptActivity</string>

@@ -247,6 +247,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f04001c;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f04001d;
         public static final int imageResult=0x7f040003;
+        public static final int instructions=0x7f040005;
         public static final int large=0x7f040002;
         public static final int logo=0x7f040004;
         public static final int name=0x7f040020;
@@ -257,7 +258,6 @@ containing a value of this type.
         public static final int showLeaderboard=0x7f040008;
         public static final int small=0x7f040000;
         public static final int startTraining=0x7f040006;
-        public static final int trainingAnnouncement=0x7f040005;
         public static final int user_id=0x7f040021;
     }
     public static final class layout {
@@ -287,12 +287,12 @@ containing a value of this type.
         public static final int training=0x7f090002;
     }
     public static final class string {
-        public static final int action_settings=0x7f07001a;
-        public static final int app_id=0x7f07001d;
+        public static final int action_settings=0x7f07001b;
+        public static final int app_id=0x7f07001e;
         public static final int app_name=0x7f070019;
-        public static final int assassinate=0x7f070022;
-        public static final int attemptDescription=0x7f070024;
-        public static final int cancel=0x7f070027;
+        public static final int assassinate=0x7f070025;
+        public static final int attemptDescription=0x7f070027;
+        public static final int cancel=0x7f07002a;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
         public static final int com_facebook_internet_permission_error_message=0x7f070013;
@@ -318,16 +318,19 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f070008;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
-        public static final int hello_world=0x7f07001b;
-        public static final int ok=0x7f070026;
-        public static final int sendAttempt=0x7f070028;
-        public static final int showLeaderboard=0x7f070021;
-        public static final int startTraining=0x7f07001e;
-        public static final int title_activity_attempt=0x7f070023;
-        public static final int title_activity_training=0x7f07001f;
-        public static final int trainingAnnouncement=0x7f070020;
-        public static final int welcome=0x7f07001c;
-        public static final int whoIsThis=0x7f070025;
+        public static final int hello_world=0x7f07001c;
+        public static final int introInstructions=0x7f070022;
+        public static final int ok=0x7f070029;
+        public static final int sendAttempt=0x7f07002b;
+        public static final int showLeaderboard=0x7f070024;
+        public static final int startTraining=0x7f07001f;
+        public static final int tagline=0x7f07001a;
+        public static final int title_activity_attempt=0x7f070026;
+        public static final int title_activity_training=0x7f070020;
+        public static final int trainingInstructions=0x7f070021;
+        public static final int veteranInstructions=0x7f070023;
+        public static final int welcome=0x7f07001d;
+        public static final int whoIsThis=0x7f070028;
     }
     public static final class style {
         /** 
