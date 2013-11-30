@@ -1,9 +1,6 @@
 package com.assassin.mobile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,12 +21,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.facebook.Session;
 
@@ -46,13 +42,15 @@ public class AttemptActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		this.attemptUri = getExternalFilesDir(null).toString() + "/" + "attempt.jpg";
-		System.out.println("*****attemptUri: " + attemptUri);
 		getFriends();
+		
+		File tempDir = getExternalFilesDir(null);
+		tempDir.mkdirs();
+		
+		this.attemptUri = tempDir.toString() + "/" + "attempt.jpg";
 		
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		File imageFile = new File(this.attemptUri);
-		imageFile.mkdirs();
 		Uri uriSavedImage = Uri.fromFile(imageFile);
 		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
 		startActivityForResult(cameraIntent, Constants.CAMERA_PIC_REQUEST);
@@ -74,7 +72,6 @@ public class AttemptActivity extends Activity {
 	    	if (resultCode == RESULT_OK) {
 	    		this.attempt = BitmapFactory.decodeFile(this.attemptUri);
 
-
 		    	ImageView image = (ImageView) findViewById(R.id.imageResult); 
 		    	image.setImageBitmap(this.attempt);
 		 
@@ -90,7 +87,6 @@ public class AttemptActivity extends Activity {
 							// The 'which' argument contains the index position
 							// of the selected item
 							AttemptActivity.this.which = which;
-							System.out.println("****List item selected: " + which);
 						}
 					})
 					.setCancelable(false)
@@ -106,6 +102,7 @@ public class AttemptActivity extends Activity {
 							// if this button is clicked, just close
 							// the dialog box and do nothing
 							dialog.cancel();
+							finish();
 						}
 					});
 
@@ -197,8 +194,6 @@ public class AttemptActivity extends Activity {
 	}
 	
     public void sendAttempt() {
-    	System.out.println("******which: " + this.which);
-    	System.out.println("****attempt: " + this.attempt);
     	setContentView(R.layout.progressbar_activity);
     	
 		String URI = "attempt/";
@@ -207,7 +202,6 @@ public class AttemptActivity extends Activity {
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
 			String to_user = (String)this.friends.getJSONObject(this.which).get("id");
-			System.out.println("****to user: " + to_user);
 			params.put("to_user", to_user);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
@@ -215,17 +209,30 @@ public class AttemptActivity extends Activity {
 			e1.printStackTrace();
 		}
 		
+		JSONObject output = null;
 		try {
-			System.out.println("****attemptUri: " + this.attemptUri);
-			System.out.println("****upload uri: " + URI);
-			String output = (String) new ImageUploadTask().execute(this.attemptUri, URI, accessToken, params).get();
-			System.out.println("****Image Upload output: " + output);
+			String outputStr = (String) new ImageUploadTask().execute(this.attemptUri, URI, accessToken, params).get();
+			output = new JSONObject(outputStr);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		new File(this.attemptUri).delete();
+		
+		if (output == null) {
+			Toast.makeText(this, "Unable to upload attempt. Please try again.", Toast.LENGTH_LONG).show();
+			finish();
+		} else {
+			finish();
+		}
+		
+		
 	}
 }
