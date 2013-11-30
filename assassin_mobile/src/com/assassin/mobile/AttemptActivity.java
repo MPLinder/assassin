@@ -132,6 +132,8 @@ public class AttemptActivity extends Activity {
 						alertDialog.show();
 					}
 				});
+			} else {
+				finish();
 			}
 	    }	 
 	}  
