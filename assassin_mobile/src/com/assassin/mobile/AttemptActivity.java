@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -45,10 +46,15 @@ public class AttemptActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		this.attemptUri = getCacheDir().toString() + "/" + "attempt.jpg";
+		this.attemptUri = getExternalFilesDir(null).toString() + "/" + "attempt.jpg";
+		System.out.println("*****attemptUri: " + attemptUri);
 		getFriends();
 		
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		File imageFile = new File(this.attemptUri);
+		imageFile.mkdirs();
+		Uri uriSavedImage = Uri.fromFile(imageFile);
+		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
 		startActivityForResult(cameraIntent, Constants.CAMERA_PIC_REQUEST);
 		
 	}
@@ -66,61 +72,48 @@ public class AttemptActivity extends Activity {
 		setContentView(R.layout.activity_attempt);
 	    if (requestCode == Constants.CAMERA_PIC_REQUEST) {  
 	    	if (resultCode == RESULT_OK) {
-	    		this.attempt = (Bitmap) data.getExtras().get("data");
+	    		this.attempt = BitmapFactory.decodeFile(this.attemptUri);
 
-				try {
-					FileOutputStream out = new FileOutputStream(this.attemptUri);
-	                this.attempt.compress(Bitmap.CompressFormat.PNG, 100, out);
-	                out.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					System.out.println("****error saving file");
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("****error saving file");
-					e.printStackTrace();
-				}
 
 		    	ImageView image = (ImageView) findViewById(R.id.imageResult); 
 		    	image.setImageBitmap(this.attempt);
 		 
-					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-						context);
-		 
-					// set title
-					alertDialogBuilder.setTitle(R.string.whoIsThis);
-					
-					alertDialogBuilder
-						.setSingleChoiceItems(getVictimAdapter(), -1, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								// The 'which' argument contains the index position
-								// of the selected item
-								AttemptActivity.this.which = which;
-								System.out.println("****List item selected: " + which);
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+					context);
+	 
+				// set title
+				alertDialogBuilder.setTitle(R.string.whoIsThis);
+				
+				alertDialogBuilder
+					.setSingleChoiceItems(getVictimAdapter(), -1, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							// The 'which' argument contains the index position
+							// of the selected item
+							AttemptActivity.this.which = which;
+							System.out.println("****List item selected: " + which);
+						}
+					})
+					.setCancelable(false)
+					.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,int id) {
+							if (AttemptActivity.this.which != null) {
+								sendAttempt();
 							}
-						})
-						.setCancelable(false)
-						.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {
-								if (AttemptActivity.this.which != null) {
-									sendAttempt();
-								}
-							}
-						  })
-						.setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {
-								// if this button is clicked, just close
-								// the dialog box and do nothing
-								dialog.cancel();
-							}
-						});
+						}
+					  })
+					.setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,int id) {
+							// if this button is clicked, just close
+							// the dialog box and do nothing
+							dialog.cancel();
+						}
+					});
 
-						// create alert dialog
-						AlertDialog alertDialog = alertDialogBuilder.create();
-		 
-						// show it
-						alertDialog.show();
+					// create alert dialog
+					AlertDialog alertDialog = alertDialogBuilder.create();
+	 
+					// show it
+					alertDialog.show();
 	    	} else {
 	    		finish();
 	    	}
