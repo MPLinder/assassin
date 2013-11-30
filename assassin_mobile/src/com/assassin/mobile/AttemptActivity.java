@@ -84,14 +84,6 @@ public class AttemptActivity extends Activity {
 
 		    	ImageView image = (ImageView) findViewById(R.id.imageResult); 
 		    	image.setImageBitmap(this.attempt);
-		    	
-		    	button = (Button) findViewById(R.id.buttonAlert);
-		    	
-		    	// add button listener
-				button.setOnClickListener(new OnClickListener() {
-		 
-				@Override
-				public void onClick(View arg0) {
 		 
 					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 						context);
@@ -112,8 +104,7 @@ public class AttemptActivity extends Activity {
 						.setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,int id) {
 								if (AttemptActivity.this.which != null) {
-									Button sendAttempt = (Button) findViewById(R.id.sendAttempt);
-									sendAttempt.setVisibility(View.VISIBLE);
+									sendAttempt();
 								}
 							}
 						  })
@@ -131,11 +122,8 @@ public class AttemptActivity extends Activity {
 						// show it
 						alertDialog.show();
 					}
-				});
-			} else {
-				finish();
-			}
-	    }	 
+				};
+	 
 	}  
 	
 	private ListAdapter getVictimAdapter(){
@@ -146,8 +134,8 @@ public class AttemptActivity extends Activity {
 				  HashMap<String, String> data = new HashMap<String, String>();
 				  String name = (String) this.friends.getJSONObject(i).get("name");
 				  data.put("name", name);
-				  Integer id = (Integer) this.friends.getJSONObject(i).get("id");
-				  data.put("id", Integer.toString(id));
+				  String id = (String) this.friends.getJSONObject(i).get("id");
+				  data.put("id", id);
 
 				  data.put("picture", friendPics.get(i));
 				  
@@ -206,7 +194,7 @@ public class AttemptActivity extends Activity {
 		}).start();
 	}
 	
-    public void sendAttempt(View view) {
+    public void sendAttempt() {
     	System.out.println("******which: " + this.which);
     	System.out.println("****attempt: " + this.attempt);
     	setContentView(R.layout.progressbar_activity);
@@ -216,9 +204,9 @@ public class AttemptActivity extends Activity {
 		String accessToken = session.getAccessToken();
 		HashMap<String, String> params = new HashMap<String, String>();
 		try {
-			Integer to_user = (Integer)this.friends.getJSONObject(this.which).get("id");
-			System.out.println("****to user: " + Integer.toString(to_user));
-			params.put("to_user", Integer.toString(to_user));
+			String to_user = (String)this.friends.getJSONObject(this.which).get("id");
+			System.out.println("****to user: " + to_user);
+			params.put("to_user", to_user);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			// TODO: actually throw error here
