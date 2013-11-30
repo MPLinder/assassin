@@ -22,38 +22,48 @@
         android:id="@+id/trainingAnnouncement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/trainingAnnouncement" />
+        android:text="@string/trainingAnnouncement" 
+        android:visibility="gone" />
     
     <Button
         android:id="@+id/startTraining"
-        android:layout_width="wrap_content"
+        style="@style/ButtonText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="22dp"
+        android:background="@drawable/btn_red"
         android:onClick="startTraining"
-        android:text="@string/startTraining" />
-    
+        android:text="@string/startTraining"
+        android:visibility="gone" />
+   
+    <Button
+        android:id="@+id/assassinate"
+        style="@style/ButtonText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/btn_red"
+        android:onClick="makeAttempt"
+        android:text="@string/assassinate"
+        android:visibility="gone" />
+        
     <Button
         android:id="@+id/showLeaderboard"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="22dp"
         android:onClick="showLeaderboard"
-        android:text="@string/showLeaderboard" />
-    
-    <Button
-        android:id="@+id/assassinate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="22dp"
-        android:onClick="makeAttempt"
-        android:text="@string/assassinate" />
-        
+        android:text="@string/showLeaderboard"
+        android:background="@drawable/btn_red"
+        style="@style/ButtonText"
+        android:visibility="gone"  />
+   
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp" />
