@@ -54,8 +54,8 @@ public class MainActivity extends FragmentActivity {
     }
     
     public void showLeaderboard(View view) {
-        // TODO: start leaderboard view when I have it
-    	;
+    	Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
+    	startActivity(intent);
     }
     
     public void makeAttempt(View view) {

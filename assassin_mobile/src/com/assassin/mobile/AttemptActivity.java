@@ -87,6 +87,12 @@ public class AttemptActivity extends Activity {
 							// The 'which' argument contains the index position
 							// of the selected item
 							AttemptActivity.this.which = which;
+							try {
+								AttemptActivity.this.name = (String) AttemptActivity.this.friends.getJSONObject(which).get("name");
+							} catch (JSONException e) {
+								e.printStackTrace();
+								AttemptActivity.this.name = "";
+							}
 						}
 					})
 					.setCancelable(false)
@@ -134,7 +140,7 @@ public class AttemptActivity extends Activity {
 		for (int i = 0; i < this.friends.length(); i++) {
 			  try {
 				  HashMap<String, String> data = new HashMap<String, String>();
-				  name = (String) this.friends.getJSONObject(i).get("name");
+				  String name = (String) this.friends.getJSONObject(i).get("name");
 				  data.put("name", name);
 				  String id = (String) this.friends.getJSONObject(i).get("id");
 				  data.put("id", id);
