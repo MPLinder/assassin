@@ -37,6 +37,7 @@ public class AttemptActivity extends Activity {
 	private Bitmap attempt;
 	private String attemptUri;
 	private Integer which;
+	private String name;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class AttemptActivity extends Activity {
 		for (int i = 0; i < this.friends.length(); i++) {
 			  try {
 				  HashMap<String, String> data = new HashMap<String, String>();
-				  String name = (String) this.friends.getJSONObject(i).get("name");
+				  name = (String) this.friends.getJSONObject(i).get("name");
 				  data.put("name", name);
 				  String id = (String) this.friends.getJSONObject(i).get("id");
 				  data.put("id", id);
@@ -233,10 +234,10 @@ public class AttemptActivity extends Activity {
 					e.printStackTrace();
 				}
 				
-				new File(attemptUri).delete();
-				
 				if (output == null) {
-					Toast.makeText(context, "Unable to upload attempt. Please try again.", Toast.LENGTH_LONG).show();
+					Toast.makeText(context, R.string.attemptFailed, Toast.LENGTH_LONG).show();
+					new File(attemptUri).delete();
+					attempt.recycle();
 					finish();
 				}
 				
@@ -245,8 +246,29 @@ public class AttemptActivity extends Activity {
 		}).start();
 	}
     
-    public void attemptOutputCallback(JSONObject attempt) {
-    	//TODO: start result activity here
+    public void attemptOutputCallback(JSONObject output) {
     	System.out.println("*****output callback called");
+    	
+    	String confidenceLevel = "";
+    	Boolean success = null;
+    	try {
+			confidenceLevel = (String)output.get("confidence_level");
+			success = (Boolean)output.get("success");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			
+			Toast.makeText(context, R.string.attemptFailed, Toast.LENGTH_LONG).show();
+			new File(attemptUri).delete();
+			this.attempt.recycle();
+			finish();
+		}
+    	
+    	Intent intent = new Intent(this, ResultActivity.class);
+    	intent.putExtra(ResultActivity.ATTEMPT_URI, this.attemptUri);
+    	intent.putExtra(ResultActivity.TO_USER, this.name);
+    	intent.putExtra(ResultActivity.CONFIDENCE_LEVEL, confidenceLevel);
+    	intent.putExtra(ResultActivity.SUCCESSFUL_ATTEMPT, success);
+    	    	
+    	startActivity(intent);
     }
 }

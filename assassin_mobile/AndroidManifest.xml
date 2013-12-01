@@ -11,13 +11,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-feature android:name="android.hardware.camera"></uses-feature>
+
+    <uses-feature android:name="android.hardware.camera" >
+    </uses-feature>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar" android:permission="android.permission.READ_EXTERNAL_STORAGE">
+        android:permission="android.permission.READ_EXTERNAL_STORAGE"
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name="com.assassin.mobile.MainActivity"
             android:label="@string/app_name" >
@@ -38,11 +41,18 @@
         </activity>
         <activity
             android:name="com.assassin.mobile.TrainingActivity"
-            android:label="@string/title_activity_training" >
+            android:label="@string/title_activity_training" 
+    		android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.assassin.mobile.AttemptActivity"
-            android:label="@string/title_activity_attempt" >
+            android:label="@string/title_activity_attempt"
+    		android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.assassin.mobile.ResultActivity"
+            android:label="@string/title_activity_result" 
+    		android:screenOrientation="portrait" >
         </activity>
     </application>
 
