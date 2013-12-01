@@ -91,3 +91,14 @@ def get_fb_friends(user):
         url = resp['paging'].get('next')
 
     return friends
+
+
+def calculate_points(user):
+    points = 0
+    attempts = models.Attempt.objects.filter(from_user=user)
+
+    for attempt in attempts:
+        if attempt.get_confidence() >= constants.SUCCESS_PERCENT:
+            points += constants.SUCCESS_POINTS
+
+    return points

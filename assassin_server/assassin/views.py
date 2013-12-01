@@ -104,7 +104,8 @@ def friends(request):
     for friend in fb_friends:
         try:
             social_account = SocialAccount.objects.get(provider='facebook',
-                                                       uid=friend['id'])
+                                                       uid=friend['id'],
+                                                       user__is_active=True)
         except SocialAccount.DoesNotExist:
             continue
 
@@ -116,6 +117,48 @@ def friends(request):
             })
 
     return render_response(request, context={'friends': friends})
+
+
+@get_or_create_fb_user
+def leaderboard(request):
+    # TODO: This is horribly inefficient. If I ever want to scale this, fix it.
+    fb_friends = utils.get_fb_friends(request.user)
+
+    friends = []
+    for friend in fb_friends:
+        try:
+            social_account = SocialAccount.objects.get(provider='facebook',
+                                                       uid=friend['id'],
+                                                       user__is_active=True)
+        except SocialAccount.DoesNotExist:
+            continue
+
+        if utils.is_trained(social_account.user):
+
+            friends.append({
+                'name': friend['name'],
+                'id': str(social_account.user.id),
+                'picture': friend['picture']['data']['url'],
+                'points': utils.calculate_points(social_account.user)
+            })
+
+    social_account = request.user.socialaccount_set.get(provider='facebook')
+    user_info = {
+        'name': request.user.get_full_name(),
+        'id': str(request.user.id),
+        'picture': social_account.get_avatar_url(),
+        'points': utils.calculate_points(social_account.user)
+    }
+
+    friends.append(user_info)
+    friends = sorted(friends, key=lambda x: x['points'], reverse=True)[:10]
+
+    context = {
+        'friends': friends,
+        'user': user_info,
+    }
+
+    return render_response(request, context=context)
 
 
 @get_or_create_fb_user
