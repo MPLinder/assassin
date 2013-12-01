@@ -45,7 +45,7 @@ public class ResultActivity extends Activity {
 			finish();
         }
         
-		attempt = BitmapFactory.decodeFile(attemptUri);
+		attempt = Utils.getBitmap(attemptUri);
 
     	ImageView imageView = (ImageView) findViewById(R.id.attemptResult); 
     	imageView.setImageBitmap(attempt);

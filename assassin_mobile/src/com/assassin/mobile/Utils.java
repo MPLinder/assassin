@@ -198,4 +198,11 @@ public class Utils {
         }
         return null;
     }
+    
+    public static Bitmap getBitmap(String uri) {
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+	    opts.inSampleSize = 4;
+		
+		return BitmapFactory.decodeFile(uri, opts);
+    }
 }
