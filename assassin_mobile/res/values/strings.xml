@@ -8,6 +8,7 @@
     <string name="welcome">Assassin!</string>
     <string name="app_id">554910827916749</string>
     <string name="startTraining">Get Started!</string>
+    <string name="train">Train</string>
     <string name="title_activity_training">TrainingActivity</string>
     <string name="trainingInstructions">Before you can become a true assassin, you must train. We require at least three pictures of you in order to determine the success of an assassination attempt. Start training now!</string>
     <string name="introInstructions">Assassin! uses face recognition technology to allow you go take pictures of your friends and earn points, but you have to be sneaky! Sign in with Facebook to get started!</string>
@@ -44,6 +45,20 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+    
+    <style name="Text">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDx">1</item>

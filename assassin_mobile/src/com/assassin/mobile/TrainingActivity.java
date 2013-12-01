@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +31,13 @@ public class TrainingActivity extends Activity {
 			finish();
         }
 		
-        TextView trainersRequiredView = (TextView) findViewById(R.id.trainersRequired);
-        trainersRequiredView.setText(trainersRequired);
+        String instructions = "Assassin! requires at least " + trainersRequired + " training images " +
+        "in order to recognize you. Training images should be close up images of your face in good light. " +
+        "So far you have completed " + trainersCompleted + " training session(s). Train yourself up now!";
         
-        TextView trainersCompletedView = (TextView) findViewById(R.id.trainersCompleted);
-        trainersCompletedView.setText(trainersCompleted);
+        TextView trainingInstructions = (TextView) findViewById(R.id.trainingInstructions);
+        trainingInstructions.setText(instructions);
+
 		
 		
 		
@@ -70,4 +73,14 @@ public class TrainingActivity extends Activity {
 		return true;
 	}
 
+	
+    public void menu(View view) {
+    	// TODO: pass training numbers back
+    	Intent intent = new Intent(TrainingActivity.this, MainActivity.class);
+    	startActivity(intent);
+    }
+    
+    public void train (View view) {
+    	;
+    }
 }
