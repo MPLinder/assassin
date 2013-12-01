@@ -22,6 +22,8 @@ public class ResultActivity extends Activity {
 	private String confidenceLevel;
 	private String toUsername;
 	private Boolean success;
+	
+	private Bitmap attempt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class ResultActivity extends Activity {
 			finish();
         }
         
-		Bitmap attempt = BitmapFactory.decodeFile(attemptUri);
+		attempt = BitmapFactory.decodeFile(attemptUri);
 
     	ImageView imageView = (ImageView) findViewById(R.id.attemptResult); 
     	imageView.setImageBitmap(attempt);
@@ -63,6 +65,14 @@ public class ResultActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.result, menu);
 		return true;
+	}
+	
+	@Override
+	protected void onDestroy () {
+        new File(attemptUri).delete();
+        attempt.recycle();
+        
+		super.onDestroy();
 	}
 
 }
