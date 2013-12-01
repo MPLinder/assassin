@@ -134,6 +134,7 @@ def attempt(request, attempt_id=None):
             confidence, success = attempt.get_confidence()
             context['confidence_level'] = confidence
             context['success'] = success
+            context['success_percent'] = constants.SUCCESS_PERCENT
         else:
             context['form'] = form
     else:
