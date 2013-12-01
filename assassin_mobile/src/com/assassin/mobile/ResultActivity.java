@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,5 +75,20 @@ public class ResultActivity extends Activity {
         
 		super.onDestroy();
 	}
+	
+    public void showLeaderboard(View view) {
+    	Intent intent = new Intent(ResultActivity.this, LeaderboardActivity.class);
+    	startActivity(intent);
+    }
+    
+    public void makeAttempt(View view) {
+    	Intent intent = new Intent(ResultActivity.this, AttemptActivity.class);
+    	startActivity(intent);
+    }
+    
+    public void menu(View view) {
+    	Intent intent = new Intent(ResultActivity.this, MainActivity.class);
+    	startActivity(intent);
+    }
 
 }

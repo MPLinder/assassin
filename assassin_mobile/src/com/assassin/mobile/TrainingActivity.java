@@ -1,38 +1,65 @@
 package com.assassin.mobile;
 
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
-
-import com.facebook.Session;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class TrainingActivity extends Activity {
+	public static String TRAINERS_REQUIRED = "trainersRequired";
+	public static String TRAINERS_COMPLETED = "trainersCompleted";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_training);
 		
-		// TODO: this is just a proof of concept, don't actually do this
-		String imageLocation = "/storage/sdcard0/DCIM/browser-photos/1384022398651.jpg";
-		String URI = "attempt/";
-		Session session = Session.getActiveSession();
-		String accessToken = session.getAccessToken();
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("to_user", "1");
-		try {
-			String output = (String) new ImageUploadTask().execute(imageLocation, URI, accessToken, params).get();
-			System.out.println("****Image Upload output: " + output);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        Intent intent = getIntent();
+        
+        String trainersRequired = "";
+        String trainersCompleted = "";
+        if (intent.hasExtra(TRAINERS_REQUIRED) && 
+        	intent.hasExtra(TRAINERS_COMPLETED)) {
+        	
+            trainersRequired = intent.getStringExtra(TRAINERS_REQUIRED);
+        	trainersCompleted = intent.getStringExtra(TRAINERS_COMPLETED);
+        } else {
+			Toast.makeText(this, R.string.attemptFailed, Toast.LENGTH_LONG).show();
+			finish();
+        }
+		
+        TextView trainersRequiredView = (TextView) findViewById(R.id.trainersRequired);
+        trainersRequiredView.setText(trainersRequired);
+        
+        TextView trainersCompletedView = (TextView) findViewById(R.id.trainersCompleted);
+        trainersCompletedView.setText(trainersCompleted);
+		
+		
+		
+		
+		
+		
+		
+		
+//		// TODO: this is just a proof of concept, don't actually do this
+//		String imageLocation = "/storage/sdcard0/DCIM/browser-photos/1384022398651.jpg";
+//		String URI = "attempt/";
+//		Session session = Session.getActiveSession();
+//		String accessToken = session.getAccessToken();
+//		HashMap<String, String> params = new HashMap<String, String>();
+//		params.put("to_user", "1");
+//		try {
+//			String output = (String) new ImageUploadTask().execute(imageLocation, URI, accessToken, params).get();
+//			System.out.println("****Image Upload output: " + output);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ExecutionException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	

@@ -1,5 +1,7 @@
 package com.assassin.mobile;
 
+import org.json.JSONException;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -49,7 +51,19 @@ public class MainActivity extends FragmentActivity {
     }
     
     public void startTraining(View view) {
-        Intent intent = new Intent(MainActivity.this, TrainingActivity.class);           
+        Intent intent = new Intent(MainActivity.this, TrainingActivity.class);
+        
+		try {
+			Integer trainersCompleted = (Integer)mainFragment.response.get("trainers_completed");
+			Integer trainersRequired = (Integer)mainFragment.response.get("trainers_required");
+	        
+	        intent.putExtra(TrainingActivity.TRAINERS_COMPLETED, Integer.toString(trainersCompleted));
+	        intent.putExtra(TrainingActivity.TRAINERS_REQUIRED, Integer.toString(trainersRequired));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
         startActivity(intent);
     }
     

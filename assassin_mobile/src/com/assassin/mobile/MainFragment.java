@@ -23,6 +23,8 @@ public class MainFragment extends Fragment {
 	private static final String TAG = "MainFragment";
 	private UiLifecycleHelper uiHelper;
 	
+	public JSONObject response;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -52,7 +54,6 @@ public class MainFragment extends Fragment {
 	        Log.i(TAG, "Logged in...");
 	        Log.i(TAG, session.getAccessToken());
 	        
-	        JSONObject response = null;
 	        try {
 				response = new CallServerTask().execute("train/", "true", "GET").get();
 			} catch (InterruptedException e) {

@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -146,5 +147,15 @@ public class LeaderboardActivity extends Activity {
 		ListAdapter dataAdapter = new SimpleAdapter(this, list, R.layout.leaderboard_entry, from, to);
 		return dataAdapter;
 	}
+	
+    public void makeAttempt(View view) {
+    	Intent intent = new Intent(LeaderboardActivity.this, AttemptActivity.class);
+    	startActivity(intent);
+    }
+    
+    public void menu(View view) {
+    	Intent intent = new Intent(LeaderboardActivity.this, MainActivity.class);
+    	startActivity(intent);
+    }
 	
 }
