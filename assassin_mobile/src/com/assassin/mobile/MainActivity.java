@@ -54,11 +54,22 @@ public class MainActivity extends FragmentActivity {
         Intent intent = new Intent(MainActivity.this, TrainingActivity.class);
         
 		try {
-			Integer trainersCompleted = (Integer)mainFragment.response.get("trainers_completed");
-			Integer trainersRequired = (Integer)mainFragment.response.get("trainers_required");
+			String trainersCompleted = null;
+			String trainersRequired = null;
+			
+			Intent myIntent = getIntent();
+			if (myIntent.hasExtra(TrainingActivity.TRAINERS_COMPLETED) &&
+				myIntent.hasExtra(TrainingActivity.TRAINERS_REQUIRED)) {
+				trainersCompleted = myIntent.getStringExtra(TrainingActivity.TRAINERS_COMPLETED);
+				trainersRequired = myIntent.getStringExtra(TrainingActivity.TRAINERS_REQUIRED);
+				
+			} else {	
+				trainersCompleted = Integer.toString((Integer)mainFragment.response.get("trainers_completed"));
+				trainersRequired = Integer.toString((Integer)mainFragment.response.get("trainers_required"));
+			}
 	        
-	        intent.putExtra(TrainingActivity.TRAINERS_COMPLETED, Integer.toString(trainersCompleted));
-	        intent.putExtra(TrainingActivity.TRAINERS_REQUIRED, Integer.toString(trainersRequired));
+	        intent.putExtra(TrainingActivity.TRAINERS_COMPLETED, trainersCompleted);
+	        intent.putExtra(TrainingActivity.TRAINERS_REQUIRED, trainersRequired);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

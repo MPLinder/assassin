@@ -24,8 +24,9 @@
         android:id="@+id/leaderboardPoints"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:gravity="center"
+        android:layout_gravity="right"
         android:layout_weight="0.33"
+        android:gravity="center"
         android:text="points" />
 
     <TextView

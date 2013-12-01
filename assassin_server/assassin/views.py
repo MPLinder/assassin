@@ -67,6 +67,7 @@ def index(request):
 
 
 @get_or_create_fb_user
+@ensure_csrf_cookie
 def train(request):
     context = base_context(request)
     if request.method == 'POST':

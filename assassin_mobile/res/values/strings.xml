@@ -23,6 +23,7 @@
     <string name="sendAttempt">Assassinate!</string>
     <string name="attemptFailed">Unable to upload attempt. Please try again.</string>
     <string name="home">Home</string>
+    <string name="errorTryAgain">An error occurred. Please try again.</string>
 
     <style name="ButtonText">
         <item name="android:layout_width">fill_parent</item>

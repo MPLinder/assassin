@@ -58,15 +58,16 @@ public class ImageUploadTask extends AsyncTask<Object, Void, Object> {
     	reqEntity.addPart("image", contentBody);
     	
     	// Add parameters onto post request
-        for (String param : params.keySet()) {
-            try {
-                            reqEntity.addPart(param, new StringBody(params.get(param)));
-                    } catch (UnsupportedEncodingException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                    }
-        }
-        
+    	if (params != null) {
+	        for (String param : params.keySet()) {
+	            try {
+	                            reqEntity.addPart(param, new StringBody(params.get(param)));
+	                    } catch (UnsupportedEncodingException e) {
+	                            // TODO Auto-generated catch block
+	                            e.printStackTrace();
+	                    }
+	        }
+    	}
         
     	HostnameVerifier hostnameVerifier = Utils.getHostnameVerifier();
     	HttpsURLConnection conn = null;

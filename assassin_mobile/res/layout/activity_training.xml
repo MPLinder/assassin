@@ -9,6 +9,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TrainingActivity" >
     
+    <ProgressBar
+        android:id="@+id/training_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" 
+        android:visibility="gone"/>
+    
     <ImageView
         android:id="@+id/logo"
         android:layout_width="match_parent"
@@ -52,8 +59,20 @@
 	        android:background="@drawable/btn_red"
 	        android:onClick="train"
 	        android:text="@string/train" />
+	    
+	   	<Button
+	        android:id="@+id/trainAssassinate"
+	        style="@style/ButtonTextSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="22dp"
+	        android:layout_weight=".5"
+	        android:background="@drawable/btn_red"
+	        android:onClick="makeAttempt"
+	        android:text="@string/assassinate" 
+	        android:visibility="gone"/>
 
    	</LinearLayout>
-    
 
 </LinearLayout>
