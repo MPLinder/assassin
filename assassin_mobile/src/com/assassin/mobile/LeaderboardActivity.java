@@ -29,6 +29,7 @@ public class LeaderboardActivity extends Activity {
 	private String userPic;
 	
 	private ListView leaderboardView;
+	private ListView userLeaderboardView;
 	private ProgressBar progressBarView;
 
 	@Override
@@ -37,9 +38,11 @@ public class LeaderboardActivity extends Activity {
 		setContentView(R.layout.activity_leaderboard);
 				
 		leaderboardView = (ListView) findViewById(R.id.leaderboard);
+		userLeaderboardView = (ListView) findViewById(R.id.userPoints);
 		progressBarView = (ProgressBar) findViewById(R.id.lb_progress_bar);
 		
 		leaderboardView.setVisibility(View.GONE);
+		userLeaderboardView.setVisibility(View.GONE);
 		progressBarView.setVisibility(View.VISIBLE);
 		
 		getLeaderboard();
@@ -56,9 +59,11 @@ public class LeaderboardActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
     		leaderboardView.setVisibility(View.VISIBLE);
+    		userLeaderboardView.setVisibility(View.VISIBLE);
     		progressBarView.setVisibility(View.GONE);
     		
     		leaderboardView.setAdapter(leaderboardAdapter());
+    		userLeaderboardView.setAdapter(userLeaderboardAdapter());
         }
     };
 	
@@ -100,13 +105,12 @@ public class LeaderboardActivity extends Activity {
 				} else {
 					this.leaderboardPics.add(String.valueOf(R.drawable.assassin_launcher));
 				}
-				
 			}
 			
-			// For testing only. Increases number of entries in AlertDialog
+//			// For testing only. Increases number of entries in AlertDialog
 //			for (int i=0; i<20; i++) {
-//				this.friends.put(this.friends.get(0));
-//				this.friendPics.add(this.friendPics.get(0));
+//				this.leaderboard.put(this.leaderboard.get(0));
+//				this.leaderboardPics.add(this.leaderboardPics.get(0));
 //			}
 			
 		} catch (JSONException e) {
@@ -119,7 +123,6 @@ public class LeaderboardActivity extends Activity {
 	}
 
 	private ListAdapter leaderboardAdapter() {
-		// TODO: include user_info in here somewhere. only has friends for now
 		ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
 		for (int i = 0; i < this.leaderboard.length(); i++) {
@@ -132,7 +135,6 @@ public class LeaderboardActivity extends Activity {
 				  Integer points = (Integer) this.leaderboard.getJSONObject(i).get("points");
 				  data.put("points", Integer.toString(points));
 
-				  // TODO: this is populated in a thread and may not be there yet
 				  data.put("picture", leaderboardPics.get(i));
 				  
 				  list.add(data);
@@ -141,6 +143,32 @@ public class LeaderboardActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
+		
+		String[] from = {"name", "id", "picture", "points"};
+		int[] to = {R.id.leaderboardName, R.id.leaderboardUser_id, R.id.leaderboardPicture, R.id.leaderboardPoints};
+		ListAdapter dataAdapter = new SimpleAdapter(this, list, R.layout.leaderboard_entry, from, to);
+		return dataAdapter;
+	}
+	
+	private ListAdapter userLeaderboardAdapter() {
+		ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
+			try {
+				  HashMap<String, String> data = new HashMap<String, String>();
+				  String name = (String) this.user_info.get("name");
+				  data.put("name", name);
+				  String id = (String) this.user_info.get("id");
+				  data.put("id", id);
+				  Integer points = (Integer) this.user_info.get("points");
+				  data.put("points", Integer.toString(points));
+
+				  data.put("picture", userPic);
+				  
+				  list.add(data);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 		String[] from = {"name", "id", "picture", "points"};
 		int[] to = {R.id.leaderboardName, R.id.leaderboardUser_id, R.id.leaderboardPicture, R.id.leaderboardPoints};

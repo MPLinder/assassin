@@ -16,9 +16,31 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
     	android:visibility="gone"  />
+    
+    <TextView
+        android:id="@+id/leaderboardHeader"
+        style="@style/ButtonText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/leaderboardHeader" />
    	
    	<ListView 
     	android:id="@+id/leaderboard"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content" 
+    	android:layout_weight=".5"/> 
+    	
+    <TextView
+        android:id="@+id/yourPoints"
+        style="@style/Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/yourPoints" />
+    
+   	<ListView 
+    	android:id="@+id/userPoints"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content" 
     	android:layout_weight=".5"/> 

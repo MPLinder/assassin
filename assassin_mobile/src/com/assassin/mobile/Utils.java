@@ -152,12 +152,22 @@ public class Utils {
     
     static String downloadBitmap(String url, String directory) {
         final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-        final HttpGet getRequest = new HttpGet(url);
+        HttpGet getRequest = new HttpGet(url);
 
         try {
             HttpResponse response = client.execute(getRequest);
-            final int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) { 
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == HttpStatus.SC_MOVED_TEMPORARILY || statusCode == HttpStatus.SC_MOVED_PERMANENTLY) {
+            	String newUrl = response.getFirstHeader("Location").getValue();
+            	getRequest = new HttpGet(newUrl);
+            	response = client.execute(getRequest);
+            	
+            	statusCode = response.getStatusLine().getStatusCode();
+            	if (statusCode != HttpStatus.SC_OK) { 
+                    Log.w("ImageDownloader", "Error " + statusCode + " while retrieving bitmap from " + url); 
+                    return null;
+                }
+            } else if (statusCode != HttpStatus.SC_OK) { 
                 Log.w("ImageDownloader", "Error " + statusCode + " while retrieving bitmap from " + url); 
                 return null;
             }

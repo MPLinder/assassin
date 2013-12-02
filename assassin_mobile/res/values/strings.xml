@@ -26,6 +26,8 @@
     <string name="errorTryAgain">An error occurred. Please try again.</string>
     <string name="success">SUCCESS!</string>
     <string name="failure">OH NO!</string>
+    <string name="leaderboardHeader">YOUR CUSTOMIZED LEADERBOARD</string>
+    <string name="yourPoints">Your Points:</string>
 
     <style name="ButtonText">
         <item name="android:layout_width">fill_parent</item>
