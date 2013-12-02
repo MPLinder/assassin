@@ -87,4 +87,9 @@ public class MainActivity extends FragmentActivity {
     	Intent intent = new Intent(MainActivity.this, AttemptActivity.class);
     	startActivity(intent);
     }
+    
+    public void result(View view) {
+    	Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+    	startActivity(intent);
+    }
 }

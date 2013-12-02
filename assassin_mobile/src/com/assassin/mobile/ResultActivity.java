@@ -18,11 +18,13 @@ public class ResultActivity extends Activity {
 	public static String CONFIDENCE_LEVEL = "confidenceLevel";
 	public static String TO_USER = "toUsername";
 	public static String SUCCESSFUL_ATTEMPT = "success";
+	public static String SUCCESS_POINTS = "success_points";
 	
 	private String attemptUri;
 	private String confidenceLevel;
 	private String toUsername;
 	private Boolean success;
+	private String successPoints;
 	
 	private Bitmap attempt;
 
@@ -35,12 +37,14 @@ public class ResultActivity extends Activity {
         if (intent.hasExtra(ATTEMPT_URI) && 
         	intent.hasExtra(CONFIDENCE_LEVEL) &&
         	intent.hasExtra(TO_USER) &&
-        	intent.hasExtra(SUCCESSFUL_ATTEMPT)) {
+        	intent.hasExtra(SUCCESSFUL_ATTEMPT) &&
+        	intent.hasExtra(SUCCESS_POINTS)) {
         	
             attemptUri = intent.getStringExtra(ATTEMPT_URI);
         	confidenceLevel = intent.getStringExtra(CONFIDENCE_LEVEL);
         	toUsername = intent.getStringExtra(TO_USER);
         	success = intent.getExtras().getBoolean(SUCCESSFUL_ATTEMPT);
+        	successPoints = intent.getStringExtra(SUCCESS_POINTS);
         } else {
 			Toast.makeText(this, R.string.attemptFailed, Toast.LENGTH_LONG).show();
 			finish();
@@ -51,14 +55,18 @@ public class ResultActivity extends Activity {
     	ImageView imageView = (ImageView) findViewById(R.id.attemptResult); 
     	imageView.setImageBitmap(attempt);
     	
-    	TextView toUsernameView = (TextView) findViewById(R.id.toUsername);
-    	toUsernameView.setText(toUsername);
-    	
     	TextView successView = (TextView) findViewById(R.id.success);
-    	successView.setText(Boolean.toString(success));
-    	
-    	TextView confidenceLevelView = (TextView) findViewById(R.id.confidenceLevel);
-    	confidenceLevelView.setText(confidenceLevel);
+    	TextView resultView = (TextView) findViewById(R.id.result);
+    	TextView pointsView = (TextView) findViewById(R.id.points);
+    	if (success == true) {
+    		successView.setText(R.string.success);
+    		resultView.setText("There is a " + confidenceLevel + " chance that you hit your target!");
+    		pointsView.setText("You earned " + successPoints + " points!");
+    	} else {
+    		successView.setText(R.string.failure);
+    		resultView.setText("There is only a " + confidenceLevel + " chance that you hit your target.");
+    		pointsView.setText("You earned 0 points.");
+    	}	
 	}
 
 	@Override

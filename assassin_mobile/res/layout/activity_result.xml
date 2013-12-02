@@ -8,7 +8,29 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ResultActivity" >
-
+   
+    <TextView
+        android:id="@+id/success"
+        style="@style/ButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+    
+    <TextView
+        android:id="@+id/result"
+        style="@style/Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+    
+    <TextView
+        android:id="@+id/points"
+        style="@style/Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="" />
+    
     <ImageView
         android:id="@+id/attemptResult"
         android:layout_width="match_parent"
@@ -18,25 +40,7 @@
         android:contentDescription="@string/attemptDescription"
         android:scaleType="centerCrop"
         android:src="@drawable/assassin_launcher" />
-        
-    <TextView
-        android:id="@+id/toUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="toUsername" />
-    
-    <TextView
-        android:id="@+id/success"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="success" />
-    
-    <TextView
-        android:id="@+id/confidenceLevel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="confidence level" />
-    
+           
     <LinearLayout 
         android:orientation="horizontal" 
         android:layout_width="match_parent"

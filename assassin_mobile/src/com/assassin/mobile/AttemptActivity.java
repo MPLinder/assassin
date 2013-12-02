@@ -257,13 +257,14 @@ public class AttemptActivity extends Activity {
 	}
     
     public void attemptOutputCallback(JSONObject output) {
-    	System.out.println("*****output callback called");
     	
     	String confidenceLevel = "";
     	Boolean success = null;
+    	Integer successPoints = 0;
     	try {
 			confidenceLevel = (String)output.get("confidence_level");
 			success = (Boolean)output.get("success");
+			successPoints = (Integer)output.get("success_points");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			
@@ -278,6 +279,7 @@ public class AttemptActivity extends Activity {
     	intent.putExtra(ResultActivity.TO_USER, this.name);
     	intent.putExtra(ResultActivity.CONFIDENCE_LEVEL, confidenceLevel);
     	intent.putExtra(ResultActivity.SUCCESSFUL_ATTEMPT, success);
+    	intent.putExtra(ResultActivity.SUCCESS_POINTS, Integer.toString(successPoints));
     	    	
     	startActivity(intent);
     }

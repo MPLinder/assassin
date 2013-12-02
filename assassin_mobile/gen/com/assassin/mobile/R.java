@@ -225,7 +225,7 @@ containing a value of this type.
     public static final class id {
         public static final int action_settings=0x7f040033;
         public static final int assassinate=0x7f040008;
-        public static final int attemptResult=0x7f04000e;
+        public static final int attemptResult=0x7f040011;
         public static final int authButton=0x7f04000d;
         public static final int com_facebook_login_activity_progress_bar=0x7f040019;
         public static final int com_facebook_picker_activity_circle=0x7f040018;
@@ -247,7 +247,6 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f04002b;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040029;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f04002a;
-        public static final int confidenceLevel=0x7f040011;
         public static final int imageResult=0x7f040003;
         public static final int instructions=0x7f04000a;
         public static final int large=0x7f040002;
@@ -262,13 +261,14 @@ containing a value of this type.
         public static final int normal=0x7f040001;
         public static final int picker_subtitle=0x7f040026;
         public static final int picture=0x7f04002c;
+        public static final int points=0x7f040010;
         public static final int progress_bar=0x7f040004;
+        public static final int result=0x7f04000f;
         public static final int resultMenu=0x7f040007;
         public static final int showLeaderboard=0x7f04000c;
         public static final int small=0x7f040000;
         public static final int startTraining=0x7f04000b;
-        public static final int success=0x7f040010;
-        public static final int toUsername=0x7f04000f;
+        public static final int success=0x7f04000e;
         public static final int train=0x7f040015;
         public static final int trainAssassinate=0x7f040016;
         public static final int trainingInstructions=0x7f040013;
@@ -341,6 +341,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
         public static final int errorTryAgain=0x7f07002f;
+        public static final int failure=0x7f070031;
         public static final int hello_world=0x7f07001c;
         public static final int home=0x7f07002e;
         public static final int introInstructions=0x7f070023;
@@ -348,10 +349,11 @@ containing a value of this type.
         public static final int sendAttempt=0x7f07002c;
         public static final int showLeaderboard=0x7f070025;
         public static final int startTraining=0x7f07001f;
+        public static final int success=0x7f070030;
         public static final int tagline=0x7f07001a;
         public static final int title_activity_attempt=0x7f070027;
-        public static final int title_activity_leaderboard=0x7f070031;
-        public static final int title_activity_result=0x7f070030;
+        public static final int title_activity_leaderboard=0x7f070033;
+        public static final int title_activity_result=0x7f070032;
         public static final int title_activity_training=0x7f070021;
         public static final int train=0x7f070020;
         public static final int trainingInstructions=0x7f070022;
