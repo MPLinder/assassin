@@ -60,11 +60,11 @@ public class ResultActivity extends Activity {
     	TextView pointsView = (TextView) findViewById(R.id.points);
     	if (success == true) {
     		successView.setText(R.string.success);
-    		resultView.setText("There is a " + confidenceLevel + " chance that you hit your target!");
+    		resultView.setText("There is a " + confidenceLevel + "% chance that you hit your target!");
     		pointsView.setText("You earned " + successPoints + " points!");
     	} else {
     		successView.setText(R.string.failure);
-    		resultView.setText("There is only a " + confidenceLevel + " chance that you hit your target.");
+    		resultView.setText("There is only a " + confidenceLevel + "% chance that you hit your target.");
     		pointsView.setText("You earned 0 points.");
     	}	
 	}
