@@ -137,6 +137,14 @@ public class TrainingActivity extends Activity {
 			public void run() {
 				String URI = "train/";
 				Session session = Session.getActiveSession();
+				
+				if(session==null){                      
+				    // try to restore from cache
+					System.out.println("******retreiving session from cache");
+				    session = Session.openActiveSessionFromCache(TrainingActivity.this);
+				}
+
+				
 				String accessToken = session.getAccessToken();
 				System.out.println("******access token inside training: " + accessToken);
 				

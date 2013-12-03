@@ -218,6 +218,12 @@ public class AttemptActivity extends Activity {
 			public void run() {
 				String URI = "attempt/";
 				Session session = Session.getActiveSession();
+				
+				if(session==null){                      
+				    // try to restore from cache
+				    session = Session.openActiveSessionFromCache(AttemptActivity.this);
+				}
+				
 				String accessToken = session.getAccessToken();
 				HashMap<String, String> params = new HashMap<String, String>();
 				try {
