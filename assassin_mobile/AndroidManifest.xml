@@ -48,7 +48,8 @@
         <activity
             android:name="com.assassin.mobile.AttemptActivity"
             android:label="@string/title_activity_attempt"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
             android:name="com.assassin.mobile.ResultActivity"
@@ -57,7 +58,8 @@
         </activity>
         <activity
             android:name="com.assassin.mobile.LeaderboardActivity"
-            android:label="@string/title_activity_leaderboard" >
+            android:label="@string/title_activity_leaderboard"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
