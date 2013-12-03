@@ -98,7 +98,8 @@ def calculate_points(user):
     attempts = models.Attempt.objects.filter(from_user=user)
 
     for attempt in attempts:
-        if attempt.get_confidence() >= constants.SUCCESS_PERCENT:
+        confidence_level, success = attempt.get_confidence()
+        if success and confidence_level >= constants.SUCCESS_PERCENT:
             points += constants.SUCCESS_POINTS
 
     return points
