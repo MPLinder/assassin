@@ -72,7 +72,6 @@ public class TrainingActivity extends Activity {
 	final Handler trainingViewHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-        	// TODO set view text here
         	
         	String instructions = "Congratulations, you completed a training session! ";
         	

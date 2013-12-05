@@ -42,10 +42,13 @@ public class AttemptActivity extends Activity {
 	private String attemptUri;
 	private Integer which;
 	private String name;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_attempt);
+		progressBar = (ProgressBar) findViewById(R.id.progress_bar); 
 		
 		getFriends();
 		
@@ -72,10 +75,16 @@ public class AttemptActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
 		super.onActivityResult(requestCode, resultCode, data);
-		setContentView(R.layout.activity_attempt);
 	    if (requestCode == Constants.CAMERA_PIC_REQUEST) {  
 	    	if (resultCode == RESULT_OK) {
 	    		this.attempt = Utils.getBitmap(this.attemptUri);
+	    		
+	    		while (this.friendPics == null || this.friendPics.size() < this.friends.length()) {
+	    			progressBar.setVisibility(View.VISIBLE);
+	    			;
+	    		}
+	    		progressBar.setVisibility(View.GONE);
+	    		
 	    		
 		    	ImageView image = (ImageView) findViewById(R.id.imageResult); 
 		    	image.setImageBitmap(this.attempt);
@@ -105,7 +114,6 @@ public class AttemptActivity extends Activity {
 							if (AttemptActivity.this.which != null) {
 
 						    	ImageView image = (ImageView) findViewById(R.id.imageResult); 
-						    	ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar); 
 						    	
 						    	image.setVisibility(View.GONE);
 						    	progressBar.setVisibility(View.VISIBLE);
@@ -250,14 +258,20 @@ public class AttemptActivity extends Activity {
 					e.printStackTrace();
 				}
 				
+				// TODO text if output is null?
 				if (output == null) {
-					Toast.makeText(context, R.string.attemptFailed, Toast.LENGTH_LONG).show();
+					AttemptActivity.this.runOnUiThread(new Runnable() {
+					    public void run() {
+					        Toast.makeText(AttemptActivity.this, R.string.errorTryAgain, Toast.LENGTH_LONG).show();
+					    }
+					});
+					
 					new File(attemptUri).delete();
 					attempt.recycle();
 					finish();
+				} else {
+					attemptOutputCallback(output);
 				}
-				
-				attemptOutputCallback(output);
 			}
 		}).start();
 	}
